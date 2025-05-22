@@ -14,24 +14,23 @@ public class Bullet : MonoBehaviour
     private GameObject player;                // プレイヤーオブジェクトの参照
     private bool isPlayerAlive = true;        // プレイヤーが生きているかどうかをチェック
 
-    //[SerializeField] private GameObject target;
-
     [SerializeField] private float rotationSpeed;
 
     [SerializeField] private Vector3 fromDirection;
+
 
     public float recoilAngle = -10f;
     public float recoilSpeed = 20f;
 
     void Update()
     {
-        LookAtTarget();
+        //LookAtTarget();
     }
     void Start()
     {
         // プレイヤーの現在位置を取得して向きを決定
         player = GameObject.FindGameObjectWithTag("Player");
-        if (player != null && player.transform.position.x <= 34.45f)
+        if (player != null)
         {
             Vector2 targetPos = player.transform.position;
             moveDirection = (targetPos - (Vector2)transform.position).normalized;

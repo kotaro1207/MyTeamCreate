@@ -9,7 +9,10 @@ public class PlayerLife : MonoBehaviour
     public string bulletTag = "bullet"; // 弾のタグ
     public string HARITag = "HARI"; // 弾のタグ
     public int life { get; private set; } = 3;
+
     private int maxLife = 3;
+
+    [SerializeField, Header("不透明度")] private float transparency = 0.3f;
 
 
 
@@ -57,12 +60,13 @@ public class PlayerLife : MonoBehaviour
             yield return new WaitForSeconds(0.15f);
 
             //spriteRendererをオフ
-            hearts[life].enabled = false;
+            hearts[life].color = new Color(hearts[life].color.r, hearts[life].color.g, hearts[life].color.b, transparency);
+
 
             //flashInterval待ってから
             yield return new WaitForSeconds(0.15f);
             //spriteRendererをオン
-            hearts[life].enabled = true;
+            hearts[life].color = new Color(hearts[life].color.r, hearts[life].color.g, hearts[life].color.b, 1f);
         }
 
         hearts[life].enabled = false;

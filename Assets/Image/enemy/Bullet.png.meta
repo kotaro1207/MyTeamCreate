@@ -1,19 +1,10 @@
 fileFormatVersion: 2
-guid: 970004e1eb17d664989229552606e160
+guid: 55c7e9dfe2c0415498aba4fd65fb27f6
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 7333027602862907769
-    second: yadotsumuri_dead_0
-  - first:
-      213: 6157226919814994439
-    second: yadotsumuri_dead_1
-  - first:
-      213: 3367144879980695760
-    second: yadotsumuri_dead_2
-  - first:
-      213: -6559104640852676804
-    second: yadotsumuri_dead_3
+      213: 2208703988740019828
+    second: Bullet_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -60,7 +51,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 70
+  spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -109,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: yadotsumuri_dead_0
+      name: Bullet_0
       rect:
         serializedVersion: 2
-        x: 16
-        y: 350
-        width: 272
-        height: 204
+        x: 6
+        y: 38
+        width: 178
+        height: 122
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -124,74 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 97127c4b0c524c560800000000000000
-      internalID: 7333027602862907769
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: yadotsumuri_dead_1
-      rect:
-        serializedVersion: 2
-        x: 328
-        y: 370
-        width: 265
-        height: 161
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 70a9b0dd24dd27550800000000000000
-      internalID: 6157226919814994439
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: yadotsumuri_dead_2
-      rect:
-        serializedVersion: 2
-        x: 19
-        y: 67
-        width: 260
-        height: 175
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 0d0568ead608abe20800000000000000
-      internalID: 3367144879980695760
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: yadotsumuri_dead_3
-      rect:
-        serializedVersion: 2
-        x: 346
-        y: 81
-        width: 198
-        height: 150
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: c3f2c5da41169f4a0800000000000000
-      internalID: -6559104640852676804
+      spriteID: 47656d65394e6ae10800000000000000
+      internalID: 2208703988740019828
       vertices: []
       indices: 
       edges: []
@@ -210,10 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      yadotsumuri_dead_0: 7333027602862907769
-      yadotsumuri_dead_1: 6157226919814994439
-      yadotsumuri_dead_2: 3367144879980695760
-      yadotsumuri_dead_3: -6559104640852676804
+      Bullet_0: 2208703988740019828
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

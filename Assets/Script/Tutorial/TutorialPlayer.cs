@@ -4,30 +4,30 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-public class Player : MonoBehaviour
+public class TutorialPlayer : MonoBehaviour
 {
     public enum PlayerState
     {
-        Grounded,     // åœ°é¢ã«ã„ã‚‹
-        Air,          // ç©ºä¸­ã«ã„ã‚‹
-        ShellGround,  // ç”²ç¾…çŠ¶æ…‹ã§åœ°é¢ã«ã„ã‚‹
+        Grounded,     // ’n–Ê‚É‚¢‚é
+        Air,          // ‹ó’†‚É‚¢‚é
+        ShellGround,  // b—…ó‘Ô‚Å’n–Ê‚É‚¢‚é
     }
     private PlayerState _state;
 
-    [SerializeField, Header("ç§»å‹•é€Ÿåº¦")] private float _speed = 3;     //Unityå´ã§è¨­å®šã—ã¦
-    [SerializeField, Header("ã‚¸ãƒ£ãƒ³ãƒ—åŠ›")] private float JumpTime = 0.01f;
+    [SerializeField, Header("ˆÚ“®‘¬“x")] private float _speed = 3;     //Unity‘¤‚Åİ’è‚µ‚Ä
+    [SerializeField, Header("ƒWƒƒƒ“ƒv—Í")] private float JumpTime = 0.01f;
     private Rigidbody2D _rb;
-    private CameraShake cameraShake;  // CameraShakeã‚¹ã‚¯ãƒªãƒ—ãƒˆã¸ã®å‚ç…§
+    private CameraShake cameraShake;  // CameraShakeƒXƒNƒŠƒvƒg‚Ö‚ÌQÆ
 
     private float _move => CalculateMoveSpeed();
-    public float JumpPower;//ä¸€æ™‚çš„ã«publicã«ã—ã¦ã¾ã™
+    public float JumpPower;//ˆê“I‚Épublic‚É‚µ‚Ä‚Ü‚·
     public float MaxJumpPower = 15f;
 
-    [SerializeField, Header("æ­©ã")]
+    [SerializeField, Header("•à‚«")]
     private AnimationScript walkAnimation;
-    [SerializeField, Header("ç”²ç¾…")]
+    [SerializeField, Header("b—…")]
     private AnimationScript shellAnimation;
-    [SerializeField, Header("ã‚¸ãƒ£ãƒ³ãƒ—")]
+    [SerializeField, Header("ƒWƒƒƒ“ƒv")]
     private JumpAnimation jumpAnimation;
 
     [SerializeField, Header("FadeOut Image")]
@@ -37,7 +37,7 @@ public class Player : MonoBehaviour
 
     private PlayerLife playerLife;
     private SpriteRenderer spriteRenderer;
-    [SerializeField,Header("ä¸é€æ˜åº¦")]private float transparency = 0.3f;
+    [SerializeField, Header("•s“§–¾“x")] private float transparency = 0.3f;
 
     public bool isGround { get; private set; }
 
@@ -45,14 +45,14 @@ public class Player : MonoBehaviour
 
     private float CalculateMoveSpeed()
     {
-        if (playerLife.life <= 0||transform.position.x >= 37f)
+        if (playerLife.life <= 0 || transform.position.x >= 37f)
             return 0;
-        if (isShell && isGround)  //åœ°é¢ã«ã„ã‚‹ã‹ã¤ç”²ç¾…çŠ¶æ…‹
+        if (isShell && isGround)  //’n–Ê‚É‚¢‚é‚©‚Âb—…ó‘Ô
             return _speed / 2;
-        if (!isShell && isGround) //åœ°é¢ã«ã„ã‚‹ã¨ã
+        if (!isShell && isGround) //’n–Ê‚É‚¢‚é‚Æ‚«
             return _speed;
 
-        return _speed * 2f;     //ç©ºä¸­
+        return _speed * 2f;     //‹ó’†
     }
     private void Awake()
     {
@@ -67,7 +67,7 @@ public class Player : MonoBehaviour
     }
     void Start()
     {
-        // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«CameraShakeã‚¹ã‚¯ãƒªãƒ—ãƒˆãŒã‚¢ã‚¿ãƒƒãƒã•ã‚Œã¦ã„ã‚‹ã“ã¨ã‚’ç¢ºèª
+        // ƒvƒŒƒCƒ„[ƒIƒuƒWƒFƒNƒg‚ÉCameraShakeƒXƒNƒŠƒvƒg‚ªƒAƒ^ƒbƒ`‚³‚ê‚Ä‚¢‚é‚±‚Æ‚ğŠm”F
         cameraShake = Camera.main.GetComponent<CameraShake>();
     }
 
@@ -93,7 +93,7 @@ public class Player : MonoBehaviour
 
     private void Jump()
     {
-        if(transform.position.x <= 37f)
+        if (transform.position.x <= 37f)
         {
             if (Input.GetKey(KeyCode.Space) && isGround)
             {
@@ -136,17 +136,17 @@ public class Player : MonoBehaviour
             walkAnimation.enabled = false;
         }
 
-        if(transform.position.x >= 37f && transform.position.y == -0.7737503f)
+        if (transform.position.x >= 37f && transform.position.y == -0.7737503f)
         {
             jumpAnimation.enabled = false;
             shellAnimation.enabled = false;
             walkAnimation.enabled = false;
         }
     }
-    private void UpdateGroundStatus()//æ¥åœ°ã—ã¦ã„ã‚‹ã‹ã©ã†ã‹
+    private void UpdateGroundStatus()//Ú’n‚µ‚Ä‚¢‚é‚©‚Ç‚¤‚©
     {
-        Vector2 rayOrigin = transform.position + Vector3.down * 1.3f; // è¶³å…ƒã«ãšã‚‰ã™
-        float rayLength = 0.1f; // å°‘ã—é•·ã‚ã«
+        Vector2 rayOrigin = transform.position + Vector3.down * 1.3f; // ‘«Œ³‚É‚¸‚ç‚·
+        float rayLength = 0.1f; // ­‚µ’·‚ß‚É
         RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.down, rayLength, LayerMask.GetMask("Ground"));
         isGround = hit.collider != null;
 
@@ -178,7 +178,7 @@ public class Player : MonoBehaviour
 
     private void SceneChange()
     {
-        if(transform.position.x >= 37f)
+        if (transform.position.x >= 37f)
         {
             StartCoroutine(SceneChanger());
         }
@@ -188,35 +188,35 @@ public class Player : MonoBehaviour
     {
         yield return new WaitForSeconds(1f);
 
-        Debug.Log("ã‚ˆã‚“ã ");
+        Debug.Log("‚æ‚ñ‚¾");
         FadeOut.SetActive(true);
     }
 
-    private IEnumerator InvisibleAnimation()//ãƒã‚«ãƒã‚«ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³&ç„¡æ•µå‡¦ç†
+    private IEnumerator InvisibleAnimation()//ƒ`ƒJƒ`ƒJƒAƒjƒ[ƒVƒ‡ƒ“&–³“Gˆ—
     {
         float elapsed = 0f;
         float duration = 1f;
 
-        Physics2D.IgnoreLayerCollision(7, 8, true);//Playerã¨Damageã‚’ä¸ãˆã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®å½“ãŸã‚Šåˆ¤å®šã‚’ä¸€æ™‚çš„ã«Falseã«ã™ã‚‹
+        Physics2D.IgnoreLayerCollision(7, 8, true);//Player‚ÆDamage‚ğ—^‚¦‚éƒIƒuƒWƒFƒNƒg‚Ì“–‚½‚è”»’è‚ğˆê“I‚ÉFalse‚É‚·‚é
 
         while (elapsed < duration)
         {
             elapsed += 0.2f;
 
-            //flashIntervalå¾…ã£ã¦ã‹ã‚‰
+            //flashInterval‘Ò‚Á‚Ä‚©‚ç
             yield return new WaitForSeconds(0.15f);
 
-            //spriteRendererã‚’ã‚ªãƒ•
+            //spriteRenderer‚ğƒIƒt
             //spriteRenderer.enabled = false;
             spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, transparency);
-            //flashIntervalå¾…ã£ã¦ã‹ã‚‰
+            //flashInterval‘Ò‚Á‚Ä‚©‚ç
             yield return new WaitForSeconds(0.15f);
-            //spriteRendererã‚’ã‚ªãƒ³
+            //spriteRenderer‚ğƒIƒ“
             //spriteRenderer.enabled = true;
             spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, 1f);
         }
 
-        Physics2D.IgnoreLayerCollision(7, 8, false);//Playerã¨Damageã‚’ä¸ãˆã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®å½“ãŸã‚Šåˆ¤å®šã‚’æˆ»ã™ã€‚
+        Physics2D.IgnoreLayerCollision(7, 8, false);//Player‚ÆDamage‚ğ—^‚¦‚éƒIƒuƒWƒFƒNƒg‚Ì“–‚½‚è”»’è‚ğ–ß‚·B
 
     }
 }

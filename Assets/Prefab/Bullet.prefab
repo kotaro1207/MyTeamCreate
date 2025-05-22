@@ -179,10 +179,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d55f607bdc7f014eb4c7d003207bb04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 25
+  speed: 17
   lockYThreshold: -3
-  target: {fileID: 0}
   rotationSpeed: 0
   fromDirection: {x: 1, y: 0, z: 0}
+  transparency: 0.3
   recoilAngle: -10
   recoilSpeed: 20
