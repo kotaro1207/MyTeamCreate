@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: e9bedfbe53d2dfc4492050af40459fc5
+guid: b6f412d883bcf3444854fc0bda031940
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 6806493134804855895
-    second: MAP__0
+      213: 1251662032190562655
+    second: Minitsumuri_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: MAP__0
+      name: Minitsumuri_0
       rect:
         serializedVersion: 2
-        x: 19
-        y: 8
-        width: 1403
-        height: 536
+        x: 122
+        y: 37
+        width: 227
+        height: 246
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 75cad2a9175857e50800000000000000
-      internalID: 6806493134804855895
+      spriteID: f51ef879cfbce5110800000000000000
+      internalID: 1251662032190562655
       vertices: []
       indices: 
       edges: []
@@ -134,8 +134,7 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable:
-      MAP__0: 6806493134804855895
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -12,7 +12,7 @@ public class PlayerLife : MonoBehaviour
 
     private int maxLife = 3;
 
-    [SerializeField, Header("不透明度")] private float transparency = 0.3f;
+    [SerializeField, Header("不透明度")] private float transparency = 0.5f;
 
 
 

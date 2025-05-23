@@ -20,7 +20,7 @@ public class Enemy : MonoBehaviour
 
     private float attackTimer;  // タイマー
 
-    public bool isTutorial { get; private set; } = false;
+    [SerializeField]private bool isTutorial = false;
 
     void Start()
     {

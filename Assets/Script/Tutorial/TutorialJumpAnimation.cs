@@ -1,11 +1,11 @@
 using UnityEngine;
 
 [RequireComponent(typeof(SpriteRenderer))]
-public class JumpAnimation : MonoBehaviour
+public class TutorialJumpAnimation : MonoBehaviour
 {
     private SpriteRenderer spriteRenderer;
     private GameObject player;
-    private Player playerScript;
+    private TutorialPlayer playerScript;
     private Rigidbody2D rb;
 
     [Header("ジャンプ状態ごとのスプライト")]
@@ -20,7 +20,7 @@ public class JumpAnimation : MonoBehaviour
     {
         player = GameObject.Find("Player");
         spriteRenderer = GetComponent<SpriteRenderer>();
-        playerScript = GetComponent<Player>();
+        playerScript = GetComponent<TutorialPlayer>();
         rb = GetComponent<Rigidbody2D>();
     }
     private void OnDisable()

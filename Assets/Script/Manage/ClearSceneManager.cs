@@ -11,8 +11,6 @@ public class ClearSceneManager : MonoBehaviour
     [SerializeField]
     private SceneChange SceneChange;
 
-    private bool isDownOne = false;
-
     float time;
     float duration = 1f;
 

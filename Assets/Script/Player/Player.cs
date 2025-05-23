@@ -37,15 +37,17 @@ public class Player : MonoBehaviour
 
     private PlayerLife playerLife;
     private SpriteRenderer spriteRenderer;
-    [SerializeField,Header("不透明度")]private float transparency = 0.3f;
+    [SerializeField, Header("不透明度")] private float transparency = 0.5f;
 
     public bool isGround { get; private set; }
 
     public bool isShell => Input.GetKey(KeyCode.Space) && isGround;
 
+    //public bool rock = false;
+
     private float CalculateMoveSpeed()
     {
-        if (playerLife.life <= 0||transform.position.x >= 37f)
+        if (playerLife.life <= 0 || transform.position.x >= 37f)
             return 0;
         if (isShell && isGround)  //地面にいるかつ甲羅状態
             return _speed / 2;
@@ -79,6 +81,7 @@ public class Player : MonoBehaviour
         Jump();
         AnimationChange();
         SceneChange();
+
     }
 
     private void LookHP()
@@ -93,7 +96,7 @@ public class Player : MonoBehaviour
 
     private void Jump()
     {
-        if(transform.position.x <= 37f)
+        if (transform.position.x <= 37f)
         {
             if (Input.GetKey(KeyCode.Space) && isGround)
             {
@@ -136,7 +139,7 @@ public class Player : MonoBehaviour
             walkAnimation.enabled = false;
         }
 
-        if(transform.position.x >= 37f && transform.position.y == -0.7737503f)
+        if (transform.position.x >= 37f && transform.position.y == -0.7737503f)
         {
             jumpAnimation.enabled = false;
             shellAnimation.enabled = false;
@@ -178,7 +181,7 @@ public class Player : MonoBehaviour
 
     private void SceneChange()
     {
-        if(transform.position.x >= 37f)
+        if (transform.position.x >= 37f)
         {
             StartCoroutine(SceneChanger());
         }

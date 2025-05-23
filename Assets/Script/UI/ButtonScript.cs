@@ -63,7 +63,7 @@ public class ButtonScript : MonoBehaviour
             Debug.Log("oo");
             pressed = true;
             sprite.color = sprite.color + new Color(0, 0, 0, 1);
-            StartCoroutine(Confirmed());
+            if (pressed == true) StartCoroutine(Confirmed());
         }
     }
 

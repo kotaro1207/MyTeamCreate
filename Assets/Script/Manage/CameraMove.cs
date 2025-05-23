@@ -9,6 +9,10 @@ public class CameraMove : MonoBehaviour
     [SerializeField, Header("Ç∏ÇÁÇµ")]
     private Vector3 offsetX = new Vector3(7, 0, -10);
 
+    [SerializeField, Header("ÉSÅ[Éãà íu")]
+    private Vector3 StartOffset = new Vector3(32, 0, -10);
+
+
     private CameraShake cameraShake;
     private float fixedY = 0f;
     private float offsetZ = -10f;
@@ -16,6 +20,10 @@ public class CameraMove : MonoBehaviour
     [SerializeField, Header("ìGÇÃà íuÇ…çáÇÌÇπÇΩXé≤ÇÃêßå¿")]
     private float fixedX;
 
+    private void Start()
+    {
+        StartCoroutine(StartCamera());
+    }
 
     private void Awake()
     {
@@ -32,5 +40,13 @@ public class CameraMove : MonoBehaviour
             Vector3 newPosition = new Vector3(clampedX, fixedY, offsetZ);
             transform.position = newPosition + offsetX;
         }
+    }
+
+    private IEnumerator StartCamera()
+    {
+        yield return new WaitForSeconds(1f);
+
+
+        yield return null;
     }
 }

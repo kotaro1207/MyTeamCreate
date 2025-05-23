@@ -28,7 +28,7 @@ public class TutorialPlayer : MonoBehaviour
     [SerializeField, Header("甲羅")]
     private AnimationScript shellAnimation;
     [SerializeField, Header("ジャンプ")]
-    private JumpAnimation jumpAnimation;
+    private TutorialJumpAnimation jumpAnimation;
 
     [SerializeField, Header("FadeOut Image")]
     private GameObject FadeOut;
@@ -43,13 +43,17 @@ public class TutorialPlayer : MonoBehaviour
 
     public bool isShell => Input.GetKey(KeyCode.Space) && isGround;
 
+    public bool rock = true;
+
+    public bool moveRock = true;
+
     private float CalculateMoveSpeed()
     {
         if (playerLife.life <= 0 || transform.position.x >= 37f)
             return 0;
-        if (isShell && isGround)  //地面にいるかつ甲羅状態
+        if (isShell && isGround && !rock)  //地面にいるかつ甲羅状態
             return _speed / 2;
-        if (!isShell && isGround) //地面にいるとき
+        if (!isShell && isGround && !rock) //地面にいるとき
             return _speed;
 
         return _speed * 2f;     //空中
@@ -75,9 +79,12 @@ public class TutorialPlayer : MonoBehaviour
     {
         LookHP();
         UpdateGroundStatus();
-        Move();
-        Jump();
-        AnimationChange();
+        if(!moveRock)Move();
+        if (!rock)
+        {
+            Jump();
+            AnimationChange();
+        }
         SceneChange();
     }
 

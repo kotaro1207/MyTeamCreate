@@ -15,8 +15,9 @@ public class TutorialScript : MonoBehaviour
     [SerializeField, Header("Skip Button")]
     private Image SkipButton;
 
+
     private float PushTime;
-    private float PushMax = 5f;
+    private float PushMax = 4f;
     private bool SceneChange_ = false;
     public bool isPush => Input.GetKey(KeyCode.Space);
 
@@ -25,6 +26,7 @@ public class TutorialScript : MonoBehaviour
     {
         PushCheck();
         SceneChange();
+
     }
 
     private void PushCheck()
@@ -39,7 +41,6 @@ public class TutorialScript : MonoBehaviour
             PushTime = 0f;
             if (!SceneChange_) SkipButton.fillAmount = 0;
             else SkipButton.fillAmount = 1;
-
         }
     }
 
@@ -51,4 +52,6 @@ public class TutorialScript : MonoBehaviour
             SceneChange_ = true;
         }
     }
+
+    //private void 
 }
