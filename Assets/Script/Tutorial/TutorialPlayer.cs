@@ -73,6 +73,8 @@ public class TutorialPlayer : MonoBehaviour
     {
         // プレイヤーオブジェクトにCameraShakeスクリプトがアタッチされていることを確認
         cameraShake = Camera.main.GetComponent<CameraShake>();
+
+        StartCoroutine(StartStop());
     }
 
     private void Update()
@@ -197,6 +199,12 @@ public class TutorialPlayer : MonoBehaviour
 
         Debug.Log("よんだ");
         FadeOut.SetActive(true);
+    }
+
+    private IEnumerator StartStop()
+    {
+        yield return new WaitForSeconds(1f);
+        walkAnimation.enabled = false;
     }
 
     private IEnumerator InvisibleAnimation()//チカチカアニメーション&無敵処理

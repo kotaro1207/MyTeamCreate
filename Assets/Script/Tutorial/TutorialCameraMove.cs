@@ -22,6 +22,9 @@ public class TutorialCameraMove : MonoBehaviour
     [SerializeField, Header("ìGÇÃà íuÇ…çáÇÌÇπÇΩXé≤ÇÃêßå¿")]
     private float fixedX;
 
+    [SerializeField] private TwoTextController textCon;
+    public bool isPush { get; private set; } = false;
+
     private enum CameraState { Following, MovingToGoal, Returning }
     private CameraState state = CameraState.Following;
 
@@ -39,6 +42,13 @@ public class TutorialCameraMove : MonoBehaviour
         cameraShake = GetComponent<CameraShake>();
     }
 
+    private void Update()
+    {
+        if (textCon.currentSentenceNum == 2)
+        {
+            isPush = true;
+        }
+    }
     private void LateUpdate()
     {
         switch (state)
@@ -57,7 +67,7 @@ public class TutorialCameraMove : MonoBehaviour
                 break;
 
             case CameraState.Returning:
-                transform.position = Vector3.MoveTowards(transform.position, returnPosition, moveSpeed * Time.deltaTime);
+                transform.position = Vector3.MoveTowards(transform.position, returnPosition, moveSpeed + 0.25f * Time.deltaTime);
                 break;
         }
     }
@@ -71,21 +81,24 @@ public class TutorialCameraMove : MonoBehaviour
         // ç≈èâÇÕí«îˆèÛë‘Ç≈1ïbë“Ç¬
         state = CameraState.Following;
         yield return new WaitForSeconds(1f);
-        player.GetComponent<TutorialPlayer>().moveRock = true;
+        //player.GetComponent<TutorialPlayer>().moveRock = true;
         // ÉSÅ[ÉãÇ…å¸Ç©Ç§
         state = CameraState.MovingToGoal;
         // ÉSÅ[ÉãÇ…íÖÇ≠Ç‹Ç≈ë“Ç¬
         yield return new WaitUntil(() => Vector3.Distance(transform.position, StartOffset) < 0.05f);
 
-        yield return new WaitForSeconds(1f);
+        //yield return new WaitForSeconds(1f);
+        yield return new WaitUntil(() => isPush == true);
 
+        yield return new WaitForSeconds(0.5f);
         // ñﬂÇÈà íuÇï€ë∂
         float clampedX = Mathf.Clamp(target.position.x, -10f, fixedX);
         returnPosition = new Vector3(clampedX, fixedY, offsetZ) + offsetX;
-        player.GetComponent<TutorialPlayer>().moveRock = false;
+        //player.GetComponent<TutorialPlayer>().moveRock = false;
 
         // ñﬂÇÈ
-        state = CameraState.Returning;
+        //state = CameraState.Returning;
+        transform.position = returnPosition;
         yield return new WaitUntil(() => Vector3.Distance(transform.position, returnPosition) < 0.05f);
 
         // í«îˆçƒäJ

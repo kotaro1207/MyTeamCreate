@@ -8,6 +8,7 @@ public class TutorialJumpAnimation : MonoBehaviour
     private TutorialPlayer playerScript;
     private Rigidbody2D rb;
 
+
     [Header("ジャンプ状態ごとのスプライト")]
     public Sprite spriteJumpStart;  // 画像1
     public Sprite spriteJumpUp;     // 画像2

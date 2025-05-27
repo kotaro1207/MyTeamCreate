@@ -26,7 +26,6 @@ public class TutorialScript : MonoBehaviour
     {
         PushCheck();
         SceneChange();
-
     }
 
     private void PushCheck()

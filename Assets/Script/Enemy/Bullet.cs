@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Unity.VisualScripting;
+using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
 
 public class Bullet : MonoBehaviour
@@ -125,10 +126,21 @@ public class Bullet : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        if(collision.CompareTag("StopCollision"))
+        {
+            speed = 0f;
+        }
+
     }
     private void OnBecameInvisible()
     {
-        Destroy(this.gameObject);
+        //Destroy(this.gameObject);
+    }
+
+    public void SpeedReturn()
+    {
+        speed = 17f;
     }
 
 }
