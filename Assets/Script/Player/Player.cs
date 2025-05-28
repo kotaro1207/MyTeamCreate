@@ -33,6 +33,14 @@ public class Player : MonoBehaviour
     [SerializeField, Header("FadeOut Image")]
     private GameObject FadeOut;
 
+    private AudioSource sound;
+
+    [SerializeField, Header("ジャンプ音")] private AudioClip jump;
+    [SerializeField, Header("落下音")] private AudioClip drop;
+    [SerializeField, Header("死亡")] private AudioClip dead;
+    [SerializeField, Header("ダメージ音")] private AudioClip damage;
+
+
     public int PlayerHP;
 
     private PlayerLife playerLife;
@@ -40,8 +48,11 @@ public class Player : MonoBehaviour
     [SerializeField, Header("不透明度")] private float transparency = 0.5f;
 
     public bool isGround { get; private set; }
+    public bool isWall { get; private set; }
 
     public bool isShell => Input.GetKey(KeyCode.Space) && isGround;
+
+    private bool isOne = false;
 
     //public bool rock = false;
 
@@ -58,6 +69,7 @@ public class Player : MonoBehaviour
     }
     private void Awake()
     {
+        sound = GetComponent<AudioSource>();
         _rb = GetComponent<Rigidbody2D>();
         playerLife = GetComponent<PlayerLife>();
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -81,17 +93,38 @@ public class Player : MonoBehaviour
         Jump();
         AnimationChange();
         SceneChange();
-
     }
 
     private void LookHP()
     {
         PlayerHP = playerLife.life;
+
+        if (PlayerHP <= 0 && !isOne)
+        {
+            isOne = true;
+            sound.PlayOneShot(dead);
+        }
     }
 
     private void Move()
     {
         _rb.linearVelocity = new Vector2(_move, _rb.linearVelocity.y);
+
+        Vector2 rayOrigin = transform.position + Vector3.right * 1.5f + Vector3.down * 1; // 足元にずらす
+        float rayLength = 0.1f; // 少し長めに
+        RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.right, rayLength, LayerMask.GetMask("Ground"));
+        isWall = hit.collider != null;
+
+        Debug.DrawRay(rayOrigin, Vector2.right * rayLength, isWall ? Color.green : Color.red);
+
+        if (isWall)
+        {
+            _speed = 0f;
+        }
+        else
+        {
+            _speed = 1f;
+        }
     }
 
     private void Jump()
@@ -110,10 +143,12 @@ public class Player : MonoBehaviour
                     JumpPower = 5f;
                 }
             }
-            if (Input.GetKeyUp(KeyCode.Space))
+            if (Input.GetKeyUp(KeyCode.Space) && isGround)
             {
                 _rb.AddForce(Vector2.up * JumpPower, ForceMode2D.Impulse);
                 JumpPower = 0;
+                sound.PlayOneShot(jump);
+
             }
         }
     }
@@ -146,15 +181,35 @@ public class Player : MonoBehaviour
             walkAnimation.enabled = false;
         }
     }
-    private void UpdateGroundStatus()//接地しているかどうか
-    {
-        Vector2 rayOrigin = transform.position + Vector3.down * 1.3f; // 足元にずらす
-        float rayLength = 0.1f; // 少し長めに
-        RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.down, rayLength, LayerMask.GetMask("Ground"));
-        isGround = hit.collider != null;
+    //private void UpdateGroundStatus()//接地しているかどうか
+    //{
+    //    Vector2 rayOrigin = transform.position + Vector3.down * 1.3f; // 足元にずらす
+    //    float rayLength = 0.1f; // 少し長めに
+    //    RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.down, rayLength, LayerMask.GetMask("Ground"));
+    //    isGround = hit.collider != null;
 
-        Debug.DrawRay(rayOrigin, Vector2.down * rayLength, isGround ? Color.green : Color.red);
+    //    Debug.DrawRay(rayOrigin, Vector2.down * rayLength, isGround ? Color.green : Color.red);
+    //}
+    private void UpdateGroundStatus()
+    {
+        float rayLength = 0.1f;
+        float rayOffset = 1.5f; // キャラの幅に合わせて調整（左右のRayの横位置）
+
+        Vector2 center = (Vector2)transform.position + Vector2.down * 1.3f;
+        Vector2 left = center + Vector2.left * rayOffset;
+        Vector2 right = center + Vector2.right * rayOffset;
+
+        RaycastHit2D centerHit = Physics2D.Raycast(center, Vector2.down, rayLength, LayerMask.GetMask("Ground"));
+        RaycastHit2D leftHit = Physics2D.Raycast(left, Vector2.down, rayLength, LayerMask.GetMask("Ground"));
+        RaycastHit2D rightHit = Physics2D.Raycast(right, Vector2.down, rayLength, LayerMask.GetMask("Ground"));
+
+        isGround = centerHit.collider != null || leftHit.collider != null || rightHit.collider != null;
+
+        Debug.DrawRay(center, Vector2.down * rayLength, centerHit.collider ? Color.green : Color.red);
+        Debug.DrawRay(left, Vector2.down * rayLength, leftHit.collider ? Color.green : Color.red);
+        Debug.DrawRay(right, Vector2.down * rayLength, rightHit.collider ? Color.green : Color.red);
     }
+
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -165,6 +220,7 @@ public class Player : MonoBehaviour
                 cameraShake._ShakeCheck();
                 playerLife.TakeDamage();
                 StartCoroutine(InvisibleAnimation());
+                sound.PlayOneShot(damage);
                 Debug.Log("hit");
             }
             else
@@ -191,7 +247,6 @@ public class Player : MonoBehaviour
     {
         yield return new WaitForSeconds(1f);
 
-        Debug.Log("よんだ");
         FadeOut.SetActive(true);
     }
 

@@ -2,22 +2,27 @@ using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class Yadotyumuri : MonoBehaviour
 {
     private Animator animator;
     [SerializeField] private GameObject MessageBox;
-    [SerializeField] private GameObject text;
+    [SerializeField] private GameObject textMesh;
     [SerializeField] private OneTextController text1;
     [SerializeField] private TwoTextController text2;
+    [SerializeField] private ThirdTextController text3;
     [SerializeField] private OneTutorialMain main1;
     [SerializeField] private TwoTutorialMain main2;
+    [SerializeField] private ThirdTutorialMain main3;
     [SerializeField] private Enemy enemy;
     [SerializeField] private TutorialCameraMove cameraMove;
     [SerializeField] private Image Gray;
+    [SerializeField] private GameObject panel;
     private int count = 0;
 
     bool bullet = false;
+    public bool isBullet = false;
 
     private void Awake()
     {
@@ -41,16 +46,16 @@ public class Yadotyumuri : MonoBehaviour
             }
         }
         if(text2.currentSentenceNum == 2 && !bullet)
-        {
-            bullet = true;
-            enemy.ManualAtack();
+        {        
+            panel.GetComponent<Animator>().SetBool("ON", false);
+
+            StartCoroutine(BulletFire());
         }
-        if(text2.finished)
+        if (text2.finished)
         {
             animator.SetBool("isTalk", false);
-            StartCoroutine(StopTutorial());
+            StartCoroutine(ThierdAnimation());
         }
-
     }
     private IEnumerator CameraInMove()
     {
@@ -62,30 +67,46 @@ public class Yadotyumuri : MonoBehaviour
         main1.enabled = true;
         MessageBox.SetActive(true);
         MessageBox.GetComponent<Animator>().enabled = true;
-        text.SetActive(true);
+        textMesh.SetActive(true);
     }
 
     private IEnumerator secondsAnimation()
     {
         Gray.GetComponent<Animator>().SetBool("ON", false);
-        text.SetActive(false);
+        textMesh.SetActive(false);
         MessageBox.GetComponent<Animator>().SetBool("ON", false);
         yield return new WaitForSeconds(0.5f);
         cameraMove.CameraGoalFollow();
-        yield return new WaitForSeconds(2f);
-        Gray.GetComponent<Animator>().SetBool("ON", true);
+        yield return new WaitUntil(() => cameraMove.isFinished == true);
+        //Gray.GetComponent<Animator>().SetBool("ON", true);
         MessageBox.GetComponent<Animator>().SetBool("ON", true);
         yield return new WaitForSeconds(0.2f);
-        text.SetActive(true);
+        textMesh.SetActive(true);
+        textMesh.GetComponent<TextMeshProUGUI>().text = " ";
+        main2.enabled = true;
+        text2.enabled = true;
+        panel.GetComponent<Image>().enabled = true;
+        panel.GetComponent<Animator>().enabled = true;
+    }
+
+    private IEnumerator BulletFire()
+    {
+        bullet = true;
+        yield return new WaitForSeconds(0.5f);
+        enemy.ManualAtack();
+    }
+
+    private IEnumerator ThierdAnimation()
+    {
+        yield return new WaitForSeconds(1f);
+        MessageBox.GetComponent<Animator>().SetBool("ON", false);
+        textMesh.SetActive(false);
         main2.enabled = true;
         text2.enabled = true;
 
-    }
 
-    private IEnumerator StopTutorial()
-    {
-        yield return new WaitForSeconds(1f);
-        //Time.timeScale = 0f;
+        yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Space));
+
 
     }
 }

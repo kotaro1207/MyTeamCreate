@@ -15,6 +15,9 @@ public class ButtonScript : MonoBehaviour
     [SerializeField]
     private Image image;
 
+    [SerializeField, Header("SoundManager")]
+    private SoundManager sound;
+
     public bool isUI;
 
     private void Awake()
@@ -60,6 +63,7 @@ public class ButtonScript : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
+            sound.SelectSound();
             Debug.Log("oo");
             pressed = true;
             sprite.color = sprite.color + new Color(0, 0, 0, 1);

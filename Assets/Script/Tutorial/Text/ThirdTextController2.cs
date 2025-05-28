@@ -4,9 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class TwoTextController : MonoBehaviour
+public class ThirdTextController : MonoBehaviour
 {
-    [SerializeField] private Bullet bullet;
 
     string[] sentences; // 文章を格納する
     [SerializeField] TextMeshProUGUI uiText;   // uiTextへの参照
@@ -25,9 +24,7 @@ public class TwoTextController : MonoBehaviour
     void Start()
     {
         sentences = new string[]{
-            "奥にいる敵のもとに行くとゴールだヨ！",
-            "あっ！",
-            "SPACEキーを押してガードしてみて！",
+
         };
         SetNextSentence();
     }
@@ -39,7 +36,7 @@ public class TwoTextController : MonoBehaviour
         if (IsDisplayComplete())
         {
             //最後の文章ではない & ボタンが押された
-            if (currentSentenceNum < sentences.Length && Input.GetKeyDown(KeyCode.Space) && !bullet.isTouch)
+            if (currentSentenceNum < sentences.Length && Input.GetKeyDown(KeyCode.Space))
             {
                 SetNextSentence();
             }
@@ -47,10 +44,6 @@ public class TwoTextController : MonoBehaviour
             {
                 finished = true;
                 //currentSentenceNum = 0;
-            }
-            else if(currentSentenceNum == 2 && bullet.isTouch && Input.GetKeyDown(KeyCode.Space))
-            {
-                SetNextSentence();
             }
         }
         else

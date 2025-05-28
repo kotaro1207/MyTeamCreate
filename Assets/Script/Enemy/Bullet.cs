@@ -19,9 +19,10 @@ public class Bullet : MonoBehaviour
 
     [SerializeField] private Vector3 fromDirection;
 
-
     public float recoilAngle = -10f;
     public float recoilSpeed = 20f;
+
+    public bool isTouch = false;
 
     void Update()
     {
@@ -122,25 +123,25 @@ public class Bullet : MonoBehaviour
             Destroy(gameObject);
         }
 
-        if (collision.gameObject.name == "ground")
+        if (collision.CompareTag("ground"))
         {
             Destroy(gameObject);
         }
 
-        if(collision.CompareTag("StopCollision"))
+        if (collision.CompareTag("StopCollision"))
         {
+            isTouch = true;
             speed = 0f;
         }
 
     }
     private void OnBecameInvisible()
     {
-        //Destroy(this.gameObject);
+        
     }
 
     public void SpeedReturn()
     {
         speed = 17f;
     }
-
 }

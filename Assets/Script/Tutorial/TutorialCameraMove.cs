@@ -24,6 +24,7 @@ public class TutorialCameraMove : MonoBehaviour
 
     [SerializeField] private TwoTextController textCon;
     public bool isPush { get; private set; } = false;
+    public bool isFinished { get; private set; } = false;
 
     private enum CameraState { Following, MovingToGoal, Returning }
     private CameraState state = CameraState.Following;
@@ -86,11 +87,12 @@ public class TutorialCameraMove : MonoBehaviour
         state = CameraState.MovingToGoal;
         // ƒS[ƒ‹‚É’…‚­‚Ü‚Å‘Ò‚Â
         yield return new WaitUntil(() => Vector3.Distance(transform.position, StartOffset) < 0.05f);
+        isFinished = true;
 
         //yield return new WaitForSeconds(1f);
         yield return new WaitUntil(() => isPush == true);
 
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1.25f);
         // –ß‚éˆÊ’u‚ð•Û‘¶
         float clampedX = Mathf.Clamp(target.position.x, -10f, fixedX);
         returnPosition = new Vector3(clampedX, fixedY, offsetZ) + offsetX;

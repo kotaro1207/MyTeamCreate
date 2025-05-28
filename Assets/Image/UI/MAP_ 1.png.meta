@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 909e6da04877c064ea5084636cb22c1c
+guid: 140757c2732427147b7889c7d0eb19cf
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 2355384762501822146
-    second: SKIP2_0
+      213: -4674773101219155055
+    second: MAP_ 1_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: SKIP2_0
+      name: MAP_ 1_0
       rect:
         serializedVersion: 2
-        x: 25
-        y: 14
-        width: 215
-        height: 223
+        x: 19
+        y: 8
+        width: 1403
+        height: 536
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 2c6f94e46f100b020800000000000000
-      internalID: 2355384762501822146
+      spriteID: 193f748e1aedf1fb0800000000000000
+      internalID: -4674773101219155055
       vertices: []
       indices: 
       edges: []
@@ -134,8 +134,7 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable:
-      SKIP2_0: 2355384762501822146
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

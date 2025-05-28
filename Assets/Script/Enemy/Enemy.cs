@@ -16,11 +16,15 @@ public class Enemy : MonoBehaviour
 
     [SerializeField] AnimationScript _animation;
 
+    [SerializeField]private AudioSource sound;
+
+    [SerializeField, Header("発砲音")] private AudioClip firing;
+
     private GameObject player;
 
     private float attackTimer;  // タイマー
 
-    [SerializeField]private bool isTutorial = false;
+    public bool isTutorial = false;
 
     void Start()
     {
@@ -28,7 +32,6 @@ public class Enemy : MonoBehaviour
         SetRandomAttackInterval();
 
         player = GameObject.FindWithTag("Player");
-
     }
 
     void Update()
@@ -44,6 +47,8 @@ public class Enemy : MonoBehaviour
                 Attack();
 
                 gun.Recoil();               //銃の反動アニメーション
+
+                sound.PlayOneShot(firing);
 
                 SetRandomAttackInterval();  // 新しいランダムな攻撃間隔を設定
             }
