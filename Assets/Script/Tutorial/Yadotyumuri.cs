@@ -7,6 +7,7 @@ using TMPro;
 public class Yadotyumuri : MonoBehaviour
 {
     private Animator animator;
+    [SerializeField] private GameObject Triangle;
     [SerializeField] private GameObject MessageBox;
     [SerializeField] private GameObject textMesh;
     [SerializeField] private OneTextController text1;
@@ -39,14 +40,17 @@ public class Yadotyumuri : MonoBehaviour
             animator.SetBool("isTalk", false);
             text1.enabled = false;
             main1.enabled = false;
+
             if (Input.GetKeyDown(KeyCode.Space) && count == 0)
             {
+                Triangle.GetComponent<Image>().enabled = false;
+                Triangle.GetComponent<Animator>().enabled = false;
                 count++;
                 StartCoroutine(secondsAnimation());
             }
         }
-        if(text2.currentSentenceNum == 2 && !bullet)
-        {        
+        if (text2.currentSentenceNum == 2 && !bullet)
+        {
             panel.GetComponent<Animator>().SetBool("ON", false);
 
             StartCoroutine(BulletFire());
@@ -68,17 +72,23 @@ public class Yadotyumuri : MonoBehaviour
         MessageBox.SetActive(true);
         MessageBox.GetComponent<Animator>().enabled = true;
         textMesh.SetActive(true);
+        yield return new WaitForSeconds(0.25f);
+        Triangle.GetComponent<Image>().enabled = true;
+        Triangle.GetComponent<Animator>().enabled = true;
     }
 
     private IEnumerator secondsAnimation()
     {
         Gray.GetComponent<Animator>().SetBool("ON", false);
         textMesh.SetActive(false);
+        Triangle.GetComponent<Image>().enabled = false;
+        Triangle.GetComponent<Animator>().enabled = false;
         MessageBox.GetComponent<Animator>().SetBool("ON", false);
         yield return new WaitForSeconds(0.5f);
         cameraMove.CameraGoalFollow();
         yield return new WaitUntil(() => cameraMove.isFinished == true);
         //Gray.GetComponent<Animator>().SetBool("ON", true);
+        animator.SetBool("isTalk", true);
         MessageBox.GetComponent<Animator>().SetBool("ON", true);
         yield return new WaitForSeconds(0.2f);
         textMesh.SetActive(true);
@@ -87,6 +97,9 @@ public class Yadotyumuri : MonoBehaviour
         text2.enabled = true;
         panel.GetComponent<Image>().enabled = true;
         panel.GetComponent<Animator>().enabled = true;
+        yield return new WaitForSeconds(0.25f);
+        Triangle.GetComponent<Image>().enabled = true;
+        Triangle.GetComponent<Animator>().enabled = true;
     }
 
     private IEnumerator BulletFire()
@@ -98,12 +111,15 @@ public class Yadotyumuri : MonoBehaviour
 
     private IEnumerator ThierdAnimation()
     {
+
         yield return new WaitForSeconds(1f);
         MessageBox.GetComponent<Animator>().SetBool("ON", false);
         textMesh.SetActive(false);
-        main2.enabled = true;
-        text2.enabled = true;
-
+        main2.enabled = false;
+        text2.enabled = false;
+        //yield return new WaitForSeconds(0.25f);
+        Triangle.GetComponent<Image>().enabled = false;
+        Triangle.GetComponent<Animator>().enabled = false;
 
         yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Space));
 

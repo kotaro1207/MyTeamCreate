@@ -6,7 +6,7 @@ using TMPro;
 
 public class TwoTextController : MonoBehaviour
 {
-    [SerializeField] private Bullet bullet;
+    [SerializeField] private StopCollision stop;
 
     string[] sentences; // •¶Í‚ğŠi”[‚·‚é
     [SerializeField] TextMeshProUGUI uiText;   // uiText‚Ö‚ÌQÆ
@@ -32,6 +32,10 @@ public class TwoTextController : MonoBehaviour
         SetNextSentence();
     }
 
+    private void Update()
+    {
+
+    }
 
     public void TextUpdate(/*bool _IsPush2*/)
     {
@@ -39,7 +43,7 @@ public class TwoTextController : MonoBehaviour
         if (IsDisplayComplete())
         {
             //ÅŒã‚Ì•¶Í‚Å‚Í‚È‚¢ & ƒ{ƒ^ƒ“‚ª‰Ÿ‚³‚ê‚½
-            if (currentSentenceNum < sentences.Length && Input.GetKeyDown(KeyCode.Space) && !bullet.isTouch)
+            if (currentSentenceNum < sentences.Length && Input.GetKeyDown(KeyCode.Space) && currentSentenceNum != 2)
             {
                 SetNextSentence();
             }
@@ -48,9 +52,14 @@ public class TwoTextController : MonoBehaviour
                 finished = true;
                 //currentSentenceNum = 0;
             }
-            else if(currentSentenceNum == 2 && bullet.isTouch && Input.GetKeyDown(KeyCode.Space))
+            else if(Input.GetKeyDown(KeyCode.Space) && currentSentenceNum == 2)
             {
-                SetNextSentence();
+                Debug.Log("aaaa");
+                if(stop.isTouch)
+                {
+                    SetNextSentence();
+                    Debug.Log("bbbb");
+                }
             }
         }
         else
