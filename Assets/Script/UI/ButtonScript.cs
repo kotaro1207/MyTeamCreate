@@ -15,8 +15,9 @@ public class ButtonScript : MonoBehaviour
     [SerializeField]
     private Image image;
 
-    [SerializeField, Header("SoundManager")]
-    private SoundManager sound;
+    [SerializeField] AudioSource audioSource;
+    [SerializeField, Header("Sound")]
+    private AudioClip sound;
 
     public bool isUI;
 
@@ -25,6 +26,7 @@ public class ButtonScript : MonoBehaviour
         transparent = true;
         pressed = false;
         sprite = GetComponent<SpriteRenderer>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -61,13 +63,12 @@ public class ButtonScript : MonoBehaviour
 
     private void LoadScene()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) && !pressed)
         {
-            sound.SelectSound();
-            Debug.Log("oo");
             pressed = true;
+            StartCoroutine(Confirmed());
+            audioSource.PlayOneShot(sound);
             sprite.color = sprite.color + new Color(0, 0, 0, 1);
-            if (pressed == true) StartCoroutine(Confirmed());
         }
     }
 

@@ -1517,7 +1517,7 @@ MonoBehaviour:
   firePoint: {fileID: 1835260929}
   gun: {fileID: 2123795097}
   _animation: {fileID: 908161053}
-  sound: {fileID: 0}
+  sound: {fileID: 706163142}
   firing: {fileID: 8300000, guid: 0340df29e6314dd4d89056cb91ec11e3, type: 3}
   isTutorial: 0
 --- !u!4 &1199204680 stripped

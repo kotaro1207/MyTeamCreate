@@ -16,7 +16,7 @@ public class Enemy : MonoBehaviour
 
     [SerializeField] AnimationScript _animation;
 
-    [SerializeField]private AudioSource sound;
+    [SerializeField] private AudioSource sound;
 
     [SerializeField, Header("発砲音")] private AudioClip firing;
 
@@ -82,10 +82,11 @@ public class Enemy : MonoBehaviour
 
     public void ManualAtack()
     {
+        gun.Recoil();               //銃の反動アニメーション
         GameObject bullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.identity);
-
         // Rigidbody2D を取得して発射力を加える
         Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
+        sound.PlayOneShot(firing);
     }
 
     // プレイヤーと衝突した場合
