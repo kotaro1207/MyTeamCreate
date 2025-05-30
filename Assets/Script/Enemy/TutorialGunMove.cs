@@ -2,7 +2,7 @@
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class GunMove : MonoBehaviour
+public class TutorialGunMove : MonoBehaviour
 {
     /** 追尾対象 */
     [SerializeField] private Transform target;
@@ -58,10 +58,10 @@ public class GunMove : MonoBehaviour
 
         ///float Angle = transform.rotation + Quaternion.Euler(0,0,recoilAngle);
 
-        transform.position = new Vector3(39f, 1.8f, 0);
+        transform.position = new Vector3(39f, 3.11377f, 0);
 
-        Vector2 startTr = new Vector3(39f, 1.8f, 0);
-        Vector2 endTr = new Vector3(39.2f, 1.8f, 0);
+        Vector2 startTr = new Vector3(39f, 3.11377f, 0);
+        Vector2 endTr = new Vector3(39.2f, 3.11377f, 0);
 
         float Angle = (transform.rotation * Quaternion.Euler(0, 0, recoilAngle)).eulerAngles.z;
 

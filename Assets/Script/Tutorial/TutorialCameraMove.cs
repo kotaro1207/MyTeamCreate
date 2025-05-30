@@ -29,7 +29,7 @@ public class TutorialCameraMove : MonoBehaviour
     private enum CameraState { Following, MovingToGoal, Returning }
     private CameraState state = CameraState.Following;
 
-    private float moveSpeed = 10f;
+    private float moveSpeed = 20f;
     private Vector3 returnPosition;
 
     private void Start()

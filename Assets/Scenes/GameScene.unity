@@ -137,7 +137,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &7423445
 RectTransform:
   m_ObjectHideFlags: 0
@@ -904,7 +904,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 0.5
+  m_Volume: 0.8
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -1493,9 +1493,9 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 2123795095}
   - {fileID: 1739113473}
   - {fileID: 908161051}
-  - {fileID: 2123795095}
   - {fileID: 706163141}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2481,7 +2481,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2123795094}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -14.203342, y: 0.4794953, z: 0.039271995}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2561,6 +2561,7 @@ MonoBehaviour:
   fromDirection: {x: -1, y: 0, z: 0}
   recoilAngle: -15
   recoilSpeed: 30
+  isTutorial: 0
 --- !u!1001 &2290736540143541511
 PrefabInstance:
   m_ObjectHideFlags: 0

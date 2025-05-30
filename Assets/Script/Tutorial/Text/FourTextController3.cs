@@ -4,9 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class ThirdTextController : MonoBehaviour
+public class FourTextController : MonoBehaviour
 {
-
     string[] sentences; // 文章を格納する
     [SerializeField] TextMeshProUGUI uiText;   // uiTextへの参照
 
@@ -24,18 +23,13 @@ public class ThirdTextController : MonoBehaviour
     void Start()
     {
         sentences = new string[]{
-            "ナイスガード！",
-            "SPACEキーを押している間しかガードできないから注意してネ！",
-            "このゲージを見て！",
-            "SPACEキーを押しているとこのゲージが貯まっていくヨ！",
-            "SPACEキーを離すと貯まった分だけジャンプするヨ！"
 
         };
         SetNextSentence();
     }
 
 
-    public void TextUpdate()
+    public void TextUpdate(/*bool _IsPush2*/)
     {
         // 文章の表示完了 / 未完了
         if (IsDisplayComplete())
@@ -48,13 +42,14 @@ public class ThirdTextController : MonoBehaviour
             else if (currentSentenceNum >= sentences.Length)
             {
                 finished = true;
+                //currentSentenceNum = 0;
             }
         }
         else
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                timeUntilDisplay = 0;
+                timeUntilDisplay = 0; //※1
             }
         }
 

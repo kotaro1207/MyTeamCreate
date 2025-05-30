@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -47,6 +48,10 @@ public class TutorialPlayer : MonoBehaviour
 
     public bool moveRock = true;
 
+    public bool ManualShell = false;
+
+    public bool isTutorial = true;
+
     private float CalculateMoveSpeed()
     {
         if (playerLife.life <= 0 || transform.position.x >= 37f)
@@ -81,12 +86,12 @@ public class TutorialPlayer : MonoBehaviour
     {
         LookHP();
         UpdateGroundStatus();
-        if(!moveRock)Move();
+        if (!moveRock) Move();
         if (!rock)
         {
             Jump();
-            AnimationChange();
         }
+        AnimationChange();
         SceneChange();
     }
 
@@ -104,7 +109,7 @@ public class TutorialPlayer : MonoBehaviour
     {
         if (transform.position.x <= 37f)
         {
-            if (Input.GetKey(KeyCode.Space) && isGround)
+            if (ManualShell && isGround)
             {
                 JumpPower += JumpTime;
                 if (JumpPower > MaxJumpPower)
@@ -118,25 +123,48 @@ public class TutorialPlayer : MonoBehaviour
             }
             if (Input.GetKeyUp(KeyCode.Space))
             {
-                _rb.AddForce(Vector2.up * JumpPower, ForceMode2D.Impulse);
+                _rb.AddForce(Vector2.up * MaxJumpPower, ForceMode2D.Impulse);
                 JumpPower = 0;
             }
         }
     }
 
+    public void ManualJump()
+    {
+        _rb.AddForce(Vector2.up * JumpPower, ForceMode2D.Impulse);
+        JumpPower = 0;
+    }
+
     private void AnimationChange()
     {
-        if (isShell)
+        if (ManualShell)
+        {
+            //Debug.Log("Ç«ÇîÇîÇîÇî");
+            shellAnimation.enabled = true;
+            walkAnimation.enabled = false;
+            jumpAnimation.enabled = false;
+        }
+        else if (!ManualShell)
+        {
+            walkAnimation.enabled = true;
+            shellAnimation.enabled = false;
+            jumpAnimation.enabled = false;
+        }
+        else if (isShell && !rock)
         {
             shellAnimation.enabled = true;
             walkAnimation.enabled = false;
             jumpAnimation.enabled = false;
         }
-        else if (isGround)
+        else if (isGround && !rock)
         {
             walkAnimation.enabled = true;
             shellAnimation.enabled = false;
             jumpAnimation.enabled = false;
+        }
+        else if (rock)
+        {
+            Debug.Log("ÇÎÅ[Ç¡Ç≠");
         }
         else
         {
@@ -166,11 +194,18 @@ public class TutorialPlayer : MonoBehaviour
     {
         if (collision.CompareTag("bullet"))
         {
-            if (!isShell)
+            if (ManualShell)
+            {
+                Debug.Log("ÉKÅ[ÉhÇ≈Ç´ÇΩ");
+            }
+            else if (!isShell)
             {
                 cameraShake._ShakeCheck();
-                playerLife.TakeDamage();
-                StartCoroutine(InvisibleAnimation());
+                if (!isTutorial)
+                {
+                    playerLife.TakeDamage();
+                    StartCoroutine(InvisibleAnimation());
+                }
                 Debug.Log("hit");
             }
             else
