@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 68d33b0f82566a84498d0c3fdb68ec77
+guid: 78e636481640aca4d8422a36fed7fa4c
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 2347364934264741043
-    second: body_hand_hitosashiyubi2_0
+      213: 140433255743585067
+    second: Hand_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: body_hand_hitosashiyubi2_0
+      name: Hand_0
       rect:
         serializedVersion: 2
-        x: 42
-        y: 5
-        width: 192
-        height: 340
+        x: 59
+        y: 33
+        width: 195
+        height: 253
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 3bcde0988f3839020800000000000000
-      internalID: 2347364934264741043
+      spriteID: b2b7f335d4be2f100800000000000000
+      internalID: 140433255743585067
       vertices: []
       indices: 
       edges: []
@@ -134,8 +134,7 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable:
-      body_hand_hitosashiyubi2_0: 2347364934264741043
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -40,7 +40,7 @@ public class TutorialPlayer : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     [SerializeField, Header("不透明度")] private float transparency = 0.3f;
 
-    public bool isGround { get; private set; }
+    public bool isGround;
 
     public bool isShell => Input.GetKey(KeyCode.Space) && isGround;
 
@@ -51,6 +51,8 @@ public class TutorialPlayer : MonoBehaviour
     public bool ManualShell = false;
 
     public bool isTutorial = true;
+
+    public bool TutorialJump = false;
 
     private float CalculateMoveSpeed()
     {
@@ -123,7 +125,7 @@ public class TutorialPlayer : MonoBehaviour
             }
             if (Input.GetKeyUp(KeyCode.Space))
             {
-                _rb.AddForce(Vector2.up * MaxJumpPower, ForceMode2D.Impulse);
+                //_rb.AddForce(Vector2.up * MaxJumpPower, ForceMode2D.Impulse);
                 JumpPower = 0;
             }
         }
@@ -131,13 +133,20 @@ public class TutorialPlayer : MonoBehaviour
 
     public void ManualJump()
     {
-        _rb.AddForce(Vector2.up * JumpPower, ForceMode2D.Impulse);
-        JumpPower = 0;
+        Debug.Log("ジャンプ");
+        
+        _rb.AddForce(Vector2.up * 17f, ForceMode2D.Impulse);
     }
 
     private void AnimationChange()
     {
-        if (ManualShell)
+        if (!isGround)
+        {
+            jumpAnimation.enabled = true;
+            shellAnimation.enabled = false;
+            walkAnimation.enabled = false;
+        }
+        else if (ManualShell)
         {
             //Debug.Log("どｔｔｔｔ");
             shellAnimation.enabled = true;
@@ -161,16 +170,6 @@ public class TutorialPlayer : MonoBehaviour
             walkAnimation.enabled = true;
             shellAnimation.enabled = false;
             jumpAnimation.enabled = false;
-        }
-        else if (rock)
-        {
-            Debug.Log("ろーっく");
-        }
-        else
-        {
-            jumpAnimation.enabled = true;
-            shellAnimation.enabled = false;
-            walkAnimation.enabled = false;
         }
 
         if (transform.position.x >= 37f && transform.position.y == -0.7737503f)

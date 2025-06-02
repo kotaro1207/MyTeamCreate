@@ -19,6 +19,9 @@ public class Bullet : MonoBehaviour
 
     [SerializeField] private Vector3 fromDirection;
 
+    [SerializeField] private GameObject HitUI;
+
+
     public float recoilAngle = -10f;
     public float recoilSpeed = 20f;
 
@@ -117,12 +120,20 @@ public class Bullet : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collision)
     {
+        Vector2 hitPosition = transform.position; // 衝突した位置
+
         if (collision.CompareTag("Player"))
         {
             Debug.Log("Playerに命中！");
+            if (HitUI != null && player != null)
+            {
+                GameObject ui = Instantiate(HitUI, transform.position, Quaternion.identity);
+                ui.transform.SetParent(player.transform); // Playerの子にする
+                //ui.transform.localPosition = Vector3.zero; // 相対位置を調整（必要なら）
+                Destroy(ui, 0.1f); // 1秒後に消す
+            }
             Destroy(gameObject);
         }
-
         if (collision.CompareTag("ground"))
         {
             Destroy(gameObject);
@@ -134,10 +145,12 @@ public class Bullet : MonoBehaviour
             speed = 0f;
         }
 
+
+
     }
     private void OnBecameInvisible()
     {
-        
+            Destroy(gameObject);
     }
 
     public void SpeedReturn()

@@ -58,10 +58,10 @@ public class GunMove : MonoBehaviour
 
         ///float Angle = transform.rotation + Quaternion.Euler(0,0,recoilAngle);
 
-        transform.position = new Vector3(39f, 1.8f, 0);
+        transform.position = new Vector3(39f, 2.9f, 0);
 
-        Vector2 startTr = new Vector3(39f, 1.8f, 0);
-        Vector2 endTr = new Vector3(39.2f, 1.8f, 0);
+        Vector2 startTr = new Vector3(39f, 2.9f, 0);
+        Vector2 endTr = new Vector3(39.2f, 2.9f, 0);
 
         float Angle = (transform.rotation * Quaternion.Euler(0, 0, recoilAngle)).eulerAngles.z;
 

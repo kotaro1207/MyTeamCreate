@@ -25,10 +25,11 @@ public class ThirdTextController : MonoBehaviour
     {
         sentences = new string[]{
             "ナイスガード！",
-            "SPACEキーを押している間しかガードできないから注意してネ！",
+            "SPACEキーを押している間しか　ガードできないから注意してネ！",
             "このゲージを見て！",
-            "SPACEキーを押しているとこのゲージが貯まっていくヨ！",
-            "SPACEキーを離すと貯まった分だけジャンプするヨ！"
+            "SPACEキーを押していると　　　このゲージが貯まっていくヨ！",
+            "SPACEキーを離すと貯まった分だけジャンプするヨ！",
+            "一通り説明できたし、とりあえず実践ダァ！"
 
         };
         SetNextSentence();

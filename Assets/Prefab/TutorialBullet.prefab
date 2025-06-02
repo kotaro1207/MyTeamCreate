@@ -183,6 +183,7 @@ MonoBehaviour:
   lockYThreshold: -3
   rotationSpeed: 0
   fromDirection: {x: 1, y: 0, z: 0}
-  transparency: 0.3
+  HitUI: {fileID: 7919757385236483334, guid: 200a0464159a3a74288ee15cc7eea436, type: 3}
   recoilAngle: -10
   recoilSpeed: 20
+  isTouch: 0

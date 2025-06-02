@@ -4,14 +4,27 @@ using UnityEngine.SocialPlatforms.Impl;
 
 public class ResultScore : MonoBehaviour
 {
-    public TextMeshProUGUI scoreText;  // スコアを表示するTextMeshProUGUI
+    private ScoreTime score;
+    public TextMeshProUGUI scoreText;
 
     void Start()
     {
-        // ScoreManagerのstaticスコアを取得
-        float score = Score.score;
-
-        // スコアを表示
-        scoreText.text = Mathf.FloorToInt(score).ToString();
+        // 非アクティブも含めて全オブジェクトから探す例
+        ScoreTime[] allScores = Resources.FindObjectsOfTypeAll<ScoreTime>();
+        if (allScores.Length > 0)
+        {
+            score = allScores[0];
+        }
+        else
+        {
+            Debug.LogWarning("ScoreTime が見つかりません！");
+        }
+    }
+    void Update()
+    {
+        if (score != null && scoreText != null)
+        {
+            scoreText.text = score.score.ToString("F0");
+        }
     }
 }

@@ -15,7 +15,7 @@ public class TwoTextController : MonoBehaviour
     [Range(0.001f, 0.3f)]
     float intervalForCharDisplay = 0.05f;   // 1文字の表示にかける時間
 
-    public int currentSentenceNum { get; private set; } = 0; //現在表示している文章番号
+    public int currentSentenceNum = 0; //現在表示している文章番号
     private string currentSentence = string.Empty;  // 現在の文字列
     private float timeUntilDisplay = 0;     // 表示にかかる時間
     private float timeBeganDisplay = 1;         // 文字列の表示を開始した時間
@@ -37,6 +37,11 @@ public class TwoTextController : MonoBehaviour
 
     }
 
+    public void ManualNext()
+    {
+        SetNextSentence();
+    }
+
     public void TextUpdate(/*bool _IsPush2*/)
     {
         // 文章の表示完了 / 未完了
@@ -54,7 +59,6 @@ public class TwoTextController : MonoBehaviour
             }
             else if(Input.GetKeyDown(KeyCode.Space) && currentSentenceNum == 2)
             {
-                Debug.Log("aaaa");
                 if(stop.isTouch)
                 {
                     SetNextSentence();

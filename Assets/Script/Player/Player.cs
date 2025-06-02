@@ -14,6 +14,11 @@ public class Player : MonoBehaviour
     }
     private PlayerState _state;
 
+    private int MaxjumpCount = 2;
+    private int jumpCount = 0;
+    public int NextjumpPower = 10;
+    public float jumpSpeed = 1.5f;
+
     [SerializeField, Header("移動速度")] private float _speed = 3;     //Unity側で設定して
     [SerializeField, Header("ジャンプ力")] private float JumpTime = 0.01f;
     private Rigidbody2D _rb;
@@ -21,7 +26,7 @@ public class Player : MonoBehaviour
 
     private float _move => CalculateMoveSpeed();
     public float JumpPower;//一時的にpublicにしてます
-    public float MaxJumpPower = 15f;
+    public float MaxJumpPower = 15f, MinJumpPower = 5f;
 
     [SerializeField, Header("歩き")]
     private AnimationScript walkAnimation;
@@ -52,9 +57,12 @@ public class Player : MonoBehaviour
 
     public bool isShell => Input.GetKey(KeyCode.Space) && isGround;
 
+    public bool isAlive => PlayerHP <= 0;
+
     private bool isOne = false;
 
-    //public bool rock = false;
+    public bool Rock = false;
+    public bool JumpRock = true;
 
     private float CalculateMoveSpeed()
     {
@@ -89,10 +97,17 @@ public class Player : MonoBehaviour
     {
         LookHP();
         UpdateGroundStatus();
-        Move();
-        Jump();
-        AnimationChange();
-        SceneChange();
+        if (!Rock)
+        {
+            Move();
+        }
+        if (!JumpRock)
+        {
+            Jump();
+            AnimationChange();
+        }
+
+        if(isAlive)SceneChange();
     }
 
     private void LookHP()
@@ -129,26 +144,35 @@ public class Player : MonoBehaviour
 
     private void Jump()
     {
-        if (transform.position.x <= 37f)
-        {
-            if (Input.GetKey(KeyCode.Space) && isGround)
-            {
-                JumpPower += JumpTime;
-                if (JumpPower > MaxJumpPower)
-                {
-                    JumpPower = MaxJumpPower;
-                }
-                else if (JumpPower < 5)
-                {
-                    JumpPower = 5f;
-                }
-            }
-            if (Input.GetKeyUp(KeyCode.Space) && isGround)
-            {
-                _rb.AddForce(Vector2.up * JumpPower, ForceMode2D.Impulse);
-                JumpPower = 0;
-                sound.PlayOneShot(jump);
+        if (isGround) jumpCount = 0;
 
+        if (Input.GetKey(KeyCode.Space))
+        {
+            JumpPower += 0.075f;
+            if (JumpPower > MaxJumpPower)
+            {
+                JumpPower = MaxJumpPower;
+            }
+            else if (JumpPower < MinJumpPower)
+            {
+                JumpPower = MinJumpPower;
+            }
+        }
+        if (Input.GetKeyUp(KeyCode.Space) && jumpCount < MaxjumpCount)
+        {
+            _rb.AddForce(Vector2.up * JumpPower, ForceMode2D.Impulse);
+            JumpPower = 0;
+        }
+        if (Input.GetKeyDown(KeyCode.Space) && jumpCount < MaxjumpCount)
+        {
+            jumpCount++;
+            if (jumpCount > 1 && jumpCount < 2)
+            {
+                _rb.linearVelocity = Vector2.zero;
+                _rb.gravityScale = 0;
+                //_rb.AddForce(Vector2.up * NextjumpPower, ForceMode2D.Impulse);
+                _rb.linearVelocity = new Vector2(_rb.linearVelocity.x, 15f);
+                _rb.gravityScale = 2f;
             }
         }
     }
@@ -181,15 +205,6 @@ public class Player : MonoBehaviour
             walkAnimation.enabled = false;
         }
     }
-    //private void UpdateGroundStatus()//接地しているかどうか
-    //{
-    //    Vector2 rayOrigin = transform.position + Vector3.down * 1.3f; // 足元にずらす
-    //    float rayLength = 0.1f; // 少し長めに
-    //    RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.down, rayLength, LayerMask.GetMask("Ground"));
-    //    isGround = hit.collider != null;
-
-    //    Debug.DrawRay(rayOrigin, Vector2.down * rayLength, isGround ? Color.green : Color.red);
-    //}
     private void UpdateGroundStatus()
     {
         float rayLength = 0.1f;
@@ -209,7 +224,6 @@ public class Player : MonoBehaviour
         Debug.DrawRay(left, Vector2.down * rayLength, leftHit.collider ? Color.green : Color.red);
         Debug.DrawRay(right, Vector2.down * rayLength, rightHit.collider ? Color.green : Color.red);
     }
-
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -233,6 +247,22 @@ public class Player : MonoBehaviour
             playerLife.TakeDamage();
             cameraShake._ShakeCheck();
         }
+        else if (collision.CompareTag("pithall"))
+        {
+            // プレイヤーのColliderを無効にすることで地面を貫通
+            Collider2D playerCollider = GetComponent<Collider2D>();
+            if (playerCollider != null)
+            {
+                playerCollider.enabled = false;
+            }
+
+            // 下方向に力を加えて落下させる
+            _rb.linearVelocity = new Vector2(0, -10f);  // 任意のスピードで下に落とす
+        }
+        //if (collision.CompareTag("Destroy"))
+        //{
+        //    Destroy(gameObject);
+        //}
     }
 
     private void SceneChange()

@@ -1,10 +1,13 @@
 fileFormatVersion: 2
-guid: 68d33b0f82566a84498d0c3fdb68ec77
+guid: 435cc83842c2593409f648b6ae1aa4f7
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 2347364934264741043
-    second: body_hand_hitosashiyubi2_0
+      213: 7429365775502083376
+    second: BlackWindow_0
+  - first:
+      213: 3065652543683009196
+    second: BlackWindow_1
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,23 +103,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: body_hand_hitosashiyubi2_0
+      name: BlackWindow_0
       rect:
         serializedVersion: 2
-        x: 42
-        y: 5
-        width: 192
-        height: 340
+        x: 0
+        y: 0
+        width: 1920
+        height: 1920
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 3bcde0988f3839020800000000000000
-      internalID: 2347364934264741043
+      spriteID: 8d2f49c3a28da714186f61fa59400632
+      internalID: 1139187002
       vertices: []
       indices: 
       edges: []
@@ -125,7 +128,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: ad180ce0621fc3849b05e02ec5889f07
     internalID: 0
     vertices: []
     indices: 
@@ -135,7 +138,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      body_hand_hitosashiyubi2_0: 2347364934264741043
+      BlackWindow_0: 1139187002
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

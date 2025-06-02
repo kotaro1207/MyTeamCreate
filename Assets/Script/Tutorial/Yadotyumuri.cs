@@ -24,14 +24,21 @@ public class Yadotyumuri : MonoBehaviour
     [SerializeField] private StopCollision stopCollision;
     [SerializeField] private Image Gray;
     [SerializeField] private GameObject panel;
+    [SerializeField] private GameObject Musk;
     [SerializeField] private GameObject ButtonUI;
     [SerializeField] private GameObject HandUI;
+    [SerializeField] private GameObject FadeOut;
     private int count = 0;
 
     bool bullet = false;
     public bool isBullet = false;
     bool thierd = false;
     bool once = false;
+    //bool guageMusk = false;
+    bool touch = false;
+    bool finished = false;
+    bool Jump = false;
+    bool isMusk = false;
     private void Awake()
     {
         animator = GetComponent<Animator>();
@@ -44,7 +51,7 @@ public class Yadotyumuri : MonoBehaviour
     {
         if (text1.finished && !once)
         {
-            animator.SetBool("isTalk", false);
+            StartCoroutine(LateSpeakStop());
             text1.enabled = false;
             main1.enabled = false;
 
@@ -59,32 +66,81 @@ public class Yadotyumuri : MonoBehaviour
         }
         if (text2.currentSentenceNum == 2 && !bullet)
         {
-            panel.GetComponent<Animator>().SetBool("ON", false);
-
             StartCoroutine(BulletFire());
+        }
+        if(stopCollision.isTouch && !touch)
+        {
+            touch = true;
+
+            StartCoroutine(OnTriangle());
         }
         if (text2.finished && !thierd)
         {
             thierd = true;
-            animator.SetBool("isTalk", false);
+            StartCoroutine(LateSpeakStop());
             StartCoroutine(ThierdAnimation());
         }
-        if(text3.currentSentenceNum == 4 && Input.GetKeyDown(KeyCode.Space))
+        if(text3.currentSentenceNum == 4 && Input.GetKeyDown(KeyCode.Space) && !Jump)
         {
+            Jump = true;
             StartCoroutine(JumpStart());
+            StartCoroutine(LateSpeakStop());
+        }
+        if(text3.currentSentenceNum == 2 && Input.GetKeyDown(KeyCode.Space) && !isMusk)
+        {
+            isMusk = true;
+            StartCoroutine(GuageMusk());
+        }
+        if(text3.finished && Input.GetKeyDown(KeyCode.Space) && !finished)
+        {
+            StartCoroutine(LateSpeakStop());
+            MessageBox.GetComponent<Animator>().SetBool("ON", false);
+            Triangle.GetComponent<Image>().enabled = false;
+            Triangle.GetComponent<Animator>().enabled = false;
+            textMesh.SetActive(false);
+            main2.enabled = false;
+            text2.enabled = false;
+
+            finished = true;
+            FadeOut.GetComponent<Animator>().enabled = true;
         }
     }
+
+    private IEnumerator LateSpeakStop()
+    {
+        yield return new WaitForSeconds(0.5f);
+
+        animator.SetBool("isTalk", false);
+    }
+
+    private IEnumerator OnTriangle()
+    {
+        MessageBox.GetComponent<Animator>().SetBool("ON", true);
+        animator.SetBool("isTalk", true);
+        yield return new WaitForSeconds(0.2f);
+        main2.enabled = true;
+        text2.enabled = true;
+        text2.ManualNext();
+        yield return new WaitForSeconds(0.1f);
+        textMesh.SetActive(true);
+        yield return new WaitForSeconds(0.25f);
+        Triangle.GetComponent<Image>().enabled = true;
+        Triangle.GetComponent<Animator>().enabled = true;
+    }
+
     private IEnumerator CameraInMove()
     {
         yield return new WaitForSeconds(1f);
         Gray.GetComponent<Animator>().enabled = true;
         yield return new WaitForSeconds(0.25f);
-        animator.enabled = true;
+        MessageBox.GetComponent<Animator>().enabled = true;
+        MessageBox.SetActive(true);
+        yield return new WaitForSeconds(0.2f);
         text1.enabled = true;
         main1.enabled = true;
-        MessageBox.SetActive(true);
-        MessageBox.GetComponent<Animator>().enabled = true;
         textMesh.SetActive(true);
+        yield return new WaitForSeconds(1f);
+        animator.enabled = true;
         yield return new WaitForSeconds(0.25f);
         Triangle.GetComponent<Image>().enabled = true;
         Triangle.GetComponent<Animator>().enabled = true;
@@ -117,9 +173,18 @@ public class Yadotyumuri : MonoBehaviour
 
     private IEnumerator BulletFire()
     {
+        panel.GetComponent<Animator>().SetBool("ON", false);
         bullet = true;
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.75f);
         enemy.ManualAtack();
+        yield return new WaitForSeconds(1f);
+        StartCoroutine(LateSpeakStop());
+        MessageBox.GetComponent<Animator>().SetBool("ON", false);
+        Triangle.GetComponent<Image>().enabled = false;
+        Triangle.GetComponent<Animator>().enabled = false;
+        textMesh.SetActive(false);
+        main2.enabled = false;
+        text2.enabled = false;
     }
 
     private IEnumerator ThierdAnimation()
@@ -150,24 +215,41 @@ public class Yadotyumuri : MonoBehaviour
         stopCollision.ReStart = true;
         yield return new WaitForSeconds(1.5f);
 
-
+        animator.SetBool("isTalk", true);
         MessageBox.GetComponent<Animator>().SetBool("ON", true);
+        yield return new WaitForSeconds(0.2f);
         textMesh.SetActive(true);
         textMesh.GetComponent<TextMeshProUGUI>().text = " ";
         text3.enabled = true;
         main3.enabled = true;
-        animator.SetBool("isTalk", true);
+        yield return new WaitForSeconds(0.25f);
+        Triangle.GetComponent<Image>().enabled = true;
+        Triangle.GetComponent<Animator>().enabled = true;
 
         yield return new WaitForSeconds(1f);
     }
 
+    private IEnumerator GuageMusk()
+    {
+        yield return new WaitForSeconds(0.5f);
+
+        Musk.GetComponent<RectTransform>().position = new Vector3(220f, 430f, 0);
+
+        panel.GetComponent<Animator>().SetBool("ON", true);
+    }
+
     private IEnumerator JumpStart()
     {
+        panel.GetComponent<Animator>().SetBool("ON", false);
+
         yield return new WaitForSeconds(1f);
 
         player.GetComponent<TutorialPlayer>().ManualShell = false;
-        player.GetComponent<TutorialPlayer>().rock = false;
+        player.GetComponent<TutorialPlayer>().TutorialJump = true;
         player.GetComponent<TutorialPlayer>().ManualJump();
+
+        yield return new WaitUntil(() => player.GetComponent<TutorialPlayer>().isGround = true);
+        player.GetComponent<TutorialPlayer>().TutorialJump = false;
     }
 
 }
