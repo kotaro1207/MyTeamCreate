@@ -14,18 +14,19 @@ public class Player : MonoBehaviour
     }
     private PlayerState _state;
 
-    private int MaxjumpCount = 2;
+    private int MaxjumpCount = 1;
     private int jumpCount = 0;
-    public int NextjumpPower = 10;
+    public int NextjumpPower = 20;
     public float jumpSpeed = 1.5f;
 
+    [SerializeField, Header("ゲージ")] private GameObject Guage;
     [SerializeField, Header("移動速度")] private float _speed = 3;     //Unity側で設定して
     [SerializeField, Header("ジャンプ力")] private float JumpTime = 0.01f;
     private Rigidbody2D _rb;
     private CameraShake cameraShake;  // CameraShakeスクリプトへの参照
 
     private float _move => CalculateMoveSpeed();
-    public float JumpPower;//一時的にpublicにしてます
+    public float JumpPower, jumpTimer;//一時的にpublicにしてます
     public float MaxJumpPower = 15f, MinJumpPower = 5f;
 
     [SerializeField, Header("歩き")]
@@ -66,7 +67,7 @@ public class Player : MonoBehaviour
     public bool AnimationRock = true;
     private float CalculateMoveSpeed()
     {
-        if (playerLife.life <= 0 || transform.position.x >= 37f)
+        if (HPManager.Instance.Hp <= 0 || transform.position.x >= 37f)
             return 0;
         if (isShell && isGround)  //地面にいるかつ甲羅状態
             return _speed / 2;
@@ -103,6 +104,7 @@ public class Player : MonoBehaviour
         }
         if (!JumpRock)
         {
+            Guage.SetActive(true);
             Jump();
         }
 
@@ -113,7 +115,7 @@ public class Player : MonoBehaviour
 
     private void LookHP()
     {
-        PlayerHP = playerLife.life;
+        PlayerHP = HPManager.Instance.Hp;
 
         if (PlayerHP <= 0 && !isOne)
         {
@@ -142,11 +144,60 @@ public class Player : MonoBehaviour
             _speed = 1f;
         }
     }
+    //private void Jump()
+    //{
+    //    if (isGround) jumpCount = 0;
 
+    //    if (Input.GetKeyDown(KeyCode.Space))
+    //    {
+    //        JumpPower = 0;
+    //        if (jumpCount <= MaxjumpCount)
+    //        {
+    //            JumpPower = 10;
+    //            _rb.linearVelocity = new(_rb.linearVelocityX, 0);
+    //            _rb.AddForce(Vector2.up * JumpPower, ForceMode2D.Impulse);
+    //            jumpCount++;
+    //        }
+    //    }
+    //    if (Input.GetKey(KeyCode.Space) && isGround)
+    //    {
+    //        // スペース押してる間、jumpTimerを加算し続けてジャンプパワーをPingPongで変動
+    //        jumpTimer += Time.deltaTime * 12.6f; // 5fは変動速度、調整可能
+    //        JumpPower = Mathf.PingPong(jumpTimer, MaxJumpPower - 5f) + 5f;
+    //    }
+    //    if (Input.GetKeyUp(KeyCode.Space) && jumpCount < MaxjumpCount)
+    //    {
+    //        _rb.AddForce(Vector2.up * JumpPower, ForceMode2D.Impulse);
+    //        JumpPower = 0;
+    //        jumpTimer = 0f;
+    //    }
+    //}
     private void Jump()
     {
+        float yVel = _rb.linearVelocity.y;
+
         if (isGround) jumpCount = 0;
 
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            JumpPower = 0;
+            if (jumpCount > 0 && jumpCount < MaxjumpCount)
+            {
+                if (yVel > 0.1f)
+                {
+                    NextjumpPower = 10;
+                }
+                else
+                {
+                    NextjumpPower = 50;
+                }
+
+                _rb.linearVelocity = new(_rb.linearVelocityX, 0);
+                _rb.AddForce(Vector2.up * NextjumpPower, ForceMode2D.Impulse);
+                jumpCount++;
+            }
+        }
         if (Input.GetKey(KeyCode.Space))
         {
             JumpPower += 0.075f;
@@ -154,30 +205,18 @@ public class Player : MonoBehaviour
             {
                 JumpPower = MaxJumpPower;
             }
-            else if (JumpPower < MinJumpPower)
+            else if (JumpPower < 5)
             {
-                JumpPower = MinJumpPower;
+                JumpPower = 5f;
             }
         }
         if (Input.GetKeyUp(KeyCode.Space) && jumpCount < MaxjumpCount)
         {
             _rb.AddForce(Vector2.up * JumpPower, ForceMode2D.Impulse);
             JumpPower = 0;
-        }
-        if (Input.GetKeyDown(KeyCode.Space) && jumpCount < MaxjumpCount)
-        {
             jumpCount++;
-            if (jumpCount > 1 && jumpCount < 2)
-            {
-                _rb.linearVelocity = Vector2.zero;
-                _rb.gravityScale = 0;
-                //_rb.AddForce(Vector2.up * NextjumpPower, ForceMode2D.Impulse);
-                _rb.linearVelocity = new Vector2(_rb.linearVelocity.x, 15f);
-                _rb.gravityScale = 2f;
-            }
         }
     }
-
     private void AnimationChange()
     {
         if (isShell && !JumpRock)
@@ -201,7 +240,6 @@ public class Player : MonoBehaviour
                 walkAnimation.enabled = false;
             }
         }
-
         if (transform.position.x >= 37f && transform.position.y == -0.7737503f)
         {
             jumpAnimation.enabled = false;

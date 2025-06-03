@@ -13,7 +13,7 @@ public class ButtonScript : MonoBehaviour
     private bool transparent, pressed;
 
     [SerializeField]
-    private Image image;
+    private GameObject image;
 
     [SerializeField] AudioSource audioSource;
     [SerializeField, Header("Sound")]
@@ -119,7 +119,7 @@ public class ButtonScript : MonoBehaviour
 
         yield return new WaitForSeconds(0.5f);
 
-        image.GetComponent<Animator>().enabled = true;
+        image.SetActive(true);
 
     }
 

@@ -1,16 +1,28 @@
 using TMPro;
 using UnityEngine;
-using UnityEngine.SocialPlatforms.Impl;
-
 public class ResultTime : MonoBehaviour
 {
-    public TextMeshProUGUI scoreText;  // スコアを表示するTextMeshProUGUI
-
+    private ScoreTime time;
+    public TMP_Text timeText;
     void Start()
     {
-        float Time = Score.elapsedTime;
+        // 非アクティブも含めて全オブジェクトから探す例
+        ScoreTime[] alltimes = Resources.FindObjectsOfTypeAll<ScoreTime>();
+        if (alltimes.Length > 0)
+        {
+            time = alltimes[0];
+        }
+        else
+        {
+            Debug.LogWarning("ScoreTime が見つかりません！");
+        }
+    }
 
-        // スコアを表示
-        scoreText.text = Mathf.FloorToInt(Time).ToString();
+    void Update()
+    {
+        if (time != null && timeText != null)
+        {
+            timeText.text = " " + time.time.ToString("F0");
+        }
     }
 }

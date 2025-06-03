@@ -56,7 +56,7 @@ public class TutorialPlayer : MonoBehaviour
 
     private float CalculateMoveSpeed()
     {
-        if (playerLife.life <= 0 || transform.position.x >= 37f)
+        if (HPManager.Instance.Hp <= 0 || transform.position.x >= 37f)
             return 0;
         if (isShell && isGround && !rock)  //ínñ Ç…Ç¢ÇÈÇ©Ç¬çbóÖèÛë‘
             return _speed / 2;
@@ -99,7 +99,7 @@ public class TutorialPlayer : MonoBehaviour
 
     private void LookHP()
     {
-        PlayerHP = playerLife.life;
+        PlayerHP = HPManager.Instance.Hp;
     }
 
     private void Move()

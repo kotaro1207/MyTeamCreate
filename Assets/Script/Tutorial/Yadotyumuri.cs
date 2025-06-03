@@ -103,6 +103,7 @@ public class Yadotyumuri : MonoBehaviour
 
             finished = true;
             FadeOut.GetComponent<Animator>().enabled = true;
+            TutorialManager.Instance.tutorialCompleted = true;
         }
     }
 

@@ -255,8 +255,7 @@ MonoBehaviour:
   - {fileID: 1833668344}
   targetPosition: {x: 0, y: 100}
   speed: 300
-  SceneChange: {fileID: 0}
-  Button: {fileID: 0}
+  Button: {fileID: 2120863524}
 --- !u!4 &510924178
 Transform:
   m_ObjectHideFlags: 0
@@ -335,7 +334,7 @@ Animator:
   m_GameObject: {fileID: 697539419}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 44e2b48d105186943a7e73f7f5fe70ba, type: 2}
+  m_Controller: {fileID: 9100000, guid: 92bd5e84fe6e2b44d96d598fc092ee25, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -440,7 +439,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd901682633a1e944b5855aff8368fc4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scoreText: {fileID: 1621167004}
+  scoreText: {fileID: 2128093542}
 --- !u!114 &993583730
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -453,7 +452,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67cacf247b6717445aef234bcba9ccbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scoreText: {fileID: 2128093542}
+  scoreText: {fileID: 1621167004}
 --- !u!114 &993583731
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -867,7 +866,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: New Text
+  m_text: 'Time
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -964,7 +965,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1826633326
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1139,7 +1140,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!82 &2120863525
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1249,7 +1250,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 040d9e8686c54904987722583001e105, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  image: {fileID: 697539423}
+  image: {fileID: 697539419}
   audioSource: {fileID: 2120863525}
   sound: {fileID: 8300000, guid: f88106fe6254a3a4388fed25f75c536e, type: 3}
   isUI: 1
@@ -1382,7 +1383,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: New Text
+  m_text: Score
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
