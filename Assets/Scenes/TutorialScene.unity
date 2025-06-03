@@ -2192,7 +2192,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   minAttackInterval: 1
   maxAttackInterval: 3
-  bulletPrefab: {fileID: 3118056531834091798, guid: 6f1b7b1a50fa258468d78eff96c11afe, type: 3}
+  bulletPrefab: {fileID: 3118056531834091798, guid: e5c5fb83545a3a843b86567f445fce4b, type: 3}
   firePoint: {fileID: 1835260929}
   gun: {fileID: 2123795097}
   _animation: {fileID: 908161053}

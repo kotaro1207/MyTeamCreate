@@ -20,6 +20,8 @@ public class ButtonScript : MonoBehaviour
     private AudioClip sound;
 
     public bool isUI;
+    public bool StartAlphaOne = false;
+    public bool AlphaChanged = true;
 
     private void Awake()
     {
@@ -32,8 +34,22 @@ public class ButtonScript : MonoBehaviour
     void Update()
     {
         LoadScene();
+        if (StartAlphaOne) StartAlphaChange();
 
-        if (!pressed && isUI) AlphaChange();
+        if (!pressed && isUI && AlphaChanged) AlphaChange();
+    }
+
+    private void StartAlphaChange()
+    {
+        StartAlphaOne = false;
+
+        if (sprite.color.a == 1) AlphaChanged = true;
+
+        while (!AlphaChanged)
+        {
+            time -= Time.deltaTime;
+            sprite.color = sprite.color + new Color(0, 0, 0, changeSpeed);//“§–¾“xDOWN
+        }
     }
 
     private void AlphaChange()

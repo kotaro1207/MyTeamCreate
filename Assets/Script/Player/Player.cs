@@ -57,13 +57,13 @@ public class Player : MonoBehaviour
 
     public bool isShell => Input.GetKey(KeyCode.Space) && isGround;
 
-    public bool isAlive => PlayerHP <= 0;
+    public bool isAlive => PlayerHP >= 0;
 
     private bool isOne = false;
 
     public bool Rock = false;
     public bool JumpRock = true;
-
+    public bool AnimationRock = true;
     private float CalculateMoveSpeed()
     {
         if (playerLife.life <= 0 || transform.position.x >= 37f)
@@ -104,10 +104,11 @@ public class Player : MonoBehaviour
         if (!JumpRock)
         {
             Jump();
-            AnimationChange();
         }
 
-        if(isAlive)SceneChange();
+        if (!AnimationRock) AnimationChange();
+
+        if (isAlive) SceneChange();
     }
 
     private void LookHP()
@@ -179,7 +180,7 @@ public class Player : MonoBehaviour
 
     private void AnimationChange()
     {
-        if (isShell)
+        if (isShell && !JumpRock)
         {
             shellAnimation.enabled = true;
             walkAnimation.enabled = false;
@@ -193,9 +194,12 @@ public class Player : MonoBehaviour
         }
         else
         {
-            jumpAnimation.enabled = true;
-            shellAnimation.enabled = false;
-            walkAnimation.enabled = false;
+            if (!JumpRock)
+            {
+                jumpAnimation.enabled = true;
+                shellAnimation.enabled = false;
+                walkAnimation.enabled = false;
+            }
         }
 
         if (transform.position.x >= 37f && transform.position.y == -0.7737503f)
@@ -269,6 +273,8 @@ public class Player : MonoBehaviour
     {
         if (transform.position.x >= 37f)
         {
+            Rock = true;
+            JumpRock = true;
             StartCoroutine(SceneChanger());
         }
     }

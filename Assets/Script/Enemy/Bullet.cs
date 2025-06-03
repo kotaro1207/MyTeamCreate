@@ -25,6 +25,8 @@ public class Bullet : MonoBehaviour
     public float recoilAngle = -10f;
     public float recoilSpeed = 20f;
 
+    public bool DontDestroy = false;
+
     public bool isTouch = false;
 
     void Update()
@@ -150,7 +152,7 @@ public class Bullet : MonoBehaviour
     }
     private void OnBecameInvisible()
     {
-            Destroy(gameObject);
+        if(!DontDestroy)Destroy(gameObject);
     }
 
     public void SpeedReturn()

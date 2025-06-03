@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class BoardMove : MonoBehaviour
@@ -6,6 +7,10 @@ public class BoardMove : MonoBehaviour
     public Vector2 targetPosition = new Vector2(0f, 0f); // 中央位置（Canvasのサイズに応じて）
     public float speed = 200f;
     public SceneChange SceneChange;
+    [SerializeField, Header("ボタン")] private ENDButtonScript Button;
+
+    private bool Pushed = false;
+    private bool end = false;
 
     void Update()
     {
@@ -28,14 +33,18 @@ public class BoardMove : MonoBehaviour
             }
         }
 
-        if(allReached)
+        if(allReached && !end)
         {
-            SceneChange.enabled = true;
+            Pushed = true; 
+            end = true;
+            StartCoroutine(LateEnabledChange());
         }
-        else
-        {
-            SceneChange.enabled = false;
-        }
+    }
+    private IEnumerator LateEnabledChange()
+    {
+        yield return new WaitForSeconds(1f); 
+        SceneChange.enabled = true;
+        Button.enabled = true;
     }
 }
 
