@@ -1118,7 +1118,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90f27f391bf4ec84c986066a0f31613e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tutorialCompleted: 1
+  tutorialCompleted: 0
 --- !u!4 &1470986328
 Transform:
   m_ObjectHideFlags: 0

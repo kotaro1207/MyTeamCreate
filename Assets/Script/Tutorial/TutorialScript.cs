@@ -6,9 +6,6 @@ public class TutorialScript : MonoBehaviour
     [SerializeField, Header("Player Script")]
     private TutorialPlayer player;
 
-    [SerializeField, Header("Enemy Script")]
-    private Enemy enemy;
-
     [SerializeField, Header("FadeOut Image")]
     private GameObject FadeOut;
 
@@ -24,23 +21,7 @@ public class TutorialScript : MonoBehaviour
 
     private void Update()
     {
-        PushCheck();
         SceneChange();
-    }
-
-    private void PushCheck()
-    {
-        if (isPush)
-        {
-            PushTime += Time.deltaTime;
-            SkipButton.fillAmount += 1.0f / PushMax * Time.deltaTime;
-        }
-        else
-        {
-            PushTime = 0f;
-            if (!SceneChange_) SkipButton.fillAmount = 0;
-            else SkipButton.fillAmount = 1;
-        }
     }
 
     private void SceneChange()

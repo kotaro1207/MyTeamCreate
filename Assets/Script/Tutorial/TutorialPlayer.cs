@@ -15,14 +15,17 @@ public class TutorialPlayer : MonoBehaviour
     }
     private PlayerState _state;
 
+    [SerializeField] private TutorialGage guage;
+    [SerializeField] private GameObject guageAll;
+
     [SerializeField, Header("移動速度")] private float _speed = 3;     //Unity側で設定して
     [SerializeField, Header("ジャンプ力")] private float JumpTime = 0.01f;
     private Rigidbody2D _rb;
     private CameraShake cameraShake;  // CameraShakeスクリプトへの参照
 
     private float _move => CalculateMoveSpeed();
-    public float JumpPower;//一時的にpublicにしてます
-    public float MaxJumpPower = 15f;
+    public float JumpPower = 0;//一時的にpublicにしてます
+    public float MaxJumpPower = 17f;
 
     [SerializeField, Header("歩き")]
     private AnimationScript walkAnimation;
@@ -54,6 +57,8 @@ public class TutorialPlayer : MonoBehaviour
 
     public bool TutorialJump = false;
 
+    public float jumpTimer = 0;
+
     private float CalculateMoveSpeed()
     {
         if (HPManager.Instance.Hp <= 0 || transform.position.x >= 37f)
@@ -70,7 +75,6 @@ public class TutorialPlayer : MonoBehaviour
         _rb = GetComponent<Rigidbody2D>();
         playerLife = GetComponent<PlayerLife>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-        JumpPower = 0;
 
         walkAnimation.enabled = true;
         shellAnimation.enabled = false;
@@ -86,7 +90,28 @@ public class TutorialPlayer : MonoBehaviour
 
     private void Update()
     {
-        LookHP();
+        if (ManualShell && isGround)
+        {
+            guage.enabled = true;
+            guageAll.SetActive(true);
+        }
+        else
+        {
+            guage.enabled = false;
+            guageAll.SetActive(false);
+        }
+
+        if (ManualShell)
+        {
+            jumpTimer += Time.deltaTime * 12.6f; // 5fは変動速度、調整可能
+            JumpPower = Mathf.PingPong(jumpTimer, MaxJumpPower - 5f) + 5f;
+        }
+        else
+        {
+            jumpTimer = 0f;
+            JumpPower = 0f;
+        }
+
         UpdateGroundStatus();
         if (!moveRock) Move();
         if (!rock)
@@ -97,10 +122,6 @@ public class TutorialPlayer : MonoBehaviour
         SceneChange();
     }
 
-    private void LookHP()
-    {
-        PlayerHP = HPManager.Instance.Hp;
-    }
 
     private void Move()
     {
@@ -109,33 +130,22 @@ public class TutorialPlayer : MonoBehaviour
 
     private void Jump()
     {
-        if (transform.position.x <= 37f)
+        if (ManualShell)
         {
-            if (ManualShell && isGround)
-            {
-                JumpPower += JumpTime;
-                if (JumpPower > MaxJumpPower)
-                {
-                    JumpPower = MaxJumpPower;
-                }
-                else if (JumpPower < 5)
-                {
-                    JumpPower = 5f;
-                }
-            }
-            if (Input.GetKeyUp(KeyCode.Space))
-            {
-                //_rb.AddForce(Vector2.up * MaxJumpPower, ForceMode2D.Impulse);
-                JumpPower = 0;
-            }
+            jumpTimer += Time.deltaTime * 12.6f; // 5fは変動速度、調整可能
+            JumpPower = Mathf.PingPong(jumpTimer, MaxJumpPower - 5f) + 5f;
         }
     }
 
     public void ManualJump()
     {
         Debug.Log("ジャンプ");
-        
-        _rb.AddForce(Vector2.up * 17f, ForceMode2D.Impulse);
+        _rb.AddForce(Vector2.up * JumpPower, ForceMode2D.Impulse);
+    }
+    public void DoubleJump()
+    {
+        _rb.linearVelocity = new(_rb.linearVelocityX, 0);
+        _rb.AddForce(Vector2.up * 10, ForceMode2D.Impulse);
     }
 
     private void AnimationChange()

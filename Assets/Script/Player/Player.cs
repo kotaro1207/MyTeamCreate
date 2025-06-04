@@ -14,21 +14,9 @@ public class Player : MonoBehaviour
     }
     private PlayerState _state;
 
-    private int MaxjumpCount = 1;
-    private int jumpCount = 0;
-    public int NextjumpPower = 20;
-    public float jumpSpeed = 1.5f;
-
     [SerializeField, Header("ゲージ")] private GameObject Guage;
     [SerializeField, Header("移動速度")] private float _speed = 3;     //Unity側で設定して
     [SerializeField, Header("ジャンプ力")] private float JumpTime = 0.01f;
-    private Rigidbody2D _rb;
-    private CameraShake cameraShake;  // CameraShakeスクリプトへの参照
-
-    private float _move => CalculateMoveSpeed();
-    public float JumpPower, jumpTimer;//一時的にpublicにしてます
-    public float MaxJumpPower = 15f, MinJumpPower = 5f;
-
     [SerializeField, Header("歩き")]
     private AnimationScript walkAnimation;
     [SerializeField, Header("甲羅")]
@@ -38,33 +26,41 @@ public class Player : MonoBehaviour
 
     [SerializeField, Header("FadeOut Image")]
     private GameObject FadeOut;
-
-    private AudioSource sound;
+    [SerializeField, Header("GameOver FadeOut Image")]
+    private GameObject OverFadeOut;
 
     [SerializeField, Header("ジャンプ音")] private AudioClip jump;
     [SerializeField, Header("落下音")] private AudioClip drop;
     [SerializeField, Header("死亡")] private AudioClip dead;
     [SerializeField, Header("ダメージ音")] private AudioClip damage;
-
-
-    public int PlayerHP;
-
-    private PlayerLife playerLife;
-    private SpriteRenderer spriteRenderer;
     [SerializeField, Header("不透明度")] private float transparency = 0.5f;
 
+    private float jumpTimer = 0f;
+    private bool doubleJump = false;
+
+    public int NextjumpPower = 10;
+
+    private Rigidbody2D _rb;
+    private CameraShake cameraShake;  // CameraShakeスクリプトへの参照
+    private AudioSource sound;
+    private PlayerLife playerLife;
+    private SpriteRenderer spriteRenderer;
+
+    private float _move => CalculateMoveSpeed();
+    private bool isOne = false;
+
+    public int PlayerHP;
+    public float JumpPower;//一時的にpublicにしてます
+    public float MaxJumpPower = 15f, MinJumpPower = 5f;
     public bool isGround { get; private set; }
     public bool isWall { get; private set; }
-
     public bool isShell => Input.GetKey(KeyCode.Space) && isGround;
-
     public bool isAlive => PlayerHP >= 0;
-
-    private bool isOne = false;
 
     public bool Rock = false;
     public bool JumpRock = true;
     public bool AnimationRock = true;
+
     private float CalculateMoveSpeed()
     {
         if (HPManager.Instance.Hp <= 0 || transform.position.x >= 37f)
@@ -107,6 +103,10 @@ public class Player : MonoBehaviour
             Guage.SetActive(true);
             Jump();
         }
+        else
+        {
+            Guage.SetActive(false);
+        }
 
         if (!AnimationRock) AnimationChange();
 
@@ -121,6 +121,7 @@ public class Player : MonoBehaviour
         {
             isOne = true;
             sound.PlayOneShot(dead);
+            StartCoroutine(GameOverSceneChanger());
         }
     }
 
@@ -144,79 +145,39 @@ public class Player : MonoBehaviour
             _speed = 1f;
         }
     }
-    //private void Jump()
-    //{
-    //    if (isGround) jumpCount = 0;
 
-    //    if (Input.GetKeyDown(KeyCode.Space))
-    //    {
-    //        JumpPower = 0;
-    //        if (jumpCount <= MaxjumpCount)
-    //        {
-    //            JumpPower = 10;
-    //            _rb.linearVelocity = new(_rb.linearVelocityX, 0);
-    //            _rb.AddForce(Vector2.up * JumpPower, ForceMode2D.Impulse);
-    //            jumpCount++;
-    //        }
-    //    }
-    //    if (Input.GetKey(KeyCode.Space) && isGround)
-    //    {
-    //        // スペース押してる間、jumpTimerを加算し続けてジャンプパワーをPingPongで変動
-    //        jumpTimer += Time.deltaTime * 12.6f; // 5fは変動速度、調整可能
-    //        JumpPower = Mathf.PingPong(jumpTimer, MaxJumpPower - 5f) + 5f;
-    //    }
-    //    if (Input.GetKeyUp(KeyCode.Space) && jumpCount < MaxjumpCount)
-    //    {
-    //        _rb.AddForce(Vector2.up * JumpPower, ForceMode2D.Impulse);
-    //        JumpPower = 0;
-    //        jumpTimer = 0f;
-    //    }
-    //}
     private void Jump()
     {
         float yVel = _rb.linearVelocity.y;
 
-        if (isGround) jumpCount = 0;
+        if (isGround) doubleJump = false;
 
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            JumpPower = 0;
-            if (jumpCount > 0 && jumpCount < MaxjumpCount)
+            //if (jumpCount > 0 && jumpCount < MaxjumpCount)
+            if (!isGround && !doubleJump)
             {
-                if (yVel > 0.1f)
-                {
-                    NextjumpPower = 10;
-                }
-                else
-                {
-                    NextjumpPower = 50;
-                }
+                doubleJump = true;
 
                 _rb.linearVelocity = new(_rb.linearVelocityX, 0);
                 _rb.AddForce(Vector2.up * NextjumpPower, ForceMode2D.Impulse);
-                jumpCount++;
             }
         }
-        if (Input.GetKey(KeyCode.Space))
+        if (Input.GetKey(KeyCode.Space) && isGround)
         {
-            JumpPower += 0.075f;
-            if (JumpPower > MaxJumpPower)
-            {
-                JumpPower = MaxJumpPower;
-            }
-            else if (JumpPower < 5)
-            {
-                JumpPower = 5f;
-            }
+            jumpTimer += Time.deltaTime * 12.6f; // 5fは変動速度、調整可能
+            JumpPower = Mathf.PingPong(jumpTimer, MaxJumpPower - 5f) + 5f;
         }
-        if (Input.GetKeyUp(KeyCode.Space) && jumpCount < MaxjumpCount)
+        if (Input.GetKeyUp(KeyCode.Space) && isGround)
         {
             _rb.AddForce(Vector2.up * JumpPower, ForceMode2D.Impulse);
             JumpPower = 0;
-            jumpCount++;
+            jumpTimer = 0;
         }
     }
+
+
     private void AnimationChange()
     {
         if (isShell && !JumpRock)
@@ -244,7 +205,7 @@ public class Player : MonoBehaviour
         {
             jumpAnimation.enabled = false;
             shellAnimation.enabled = false;
-            walkAnimation.enabled = false;
+            walkAnimation.enabled = true;
         }
     }
     private void UpdateGroundStatus()
@@ -319,9 +280,21 @@ public class Player : MonoBehaviour
 
     private IEnumerator SceneChanger()
     {
+        if(!isGround) yield return new WaitUntil(() => isGround = true);
+
+        AnimationRock = true;
+
         yield return new WaitForSeconds(1f);
 
         FadeOut.SetActive(true);
+    }
+
+    private IEnumerator GameOverSceneChanger()
+    {
+        if(isGround) yield return new WaitUntil(() => isGround = true);
+
+        yield return new WaitForSeconds(1f);
+        OverFadeOut.SetActive(true);
     }
 
     private IEnumerator InvisibleAnimation()//チカチカアニメーション&無敵処理

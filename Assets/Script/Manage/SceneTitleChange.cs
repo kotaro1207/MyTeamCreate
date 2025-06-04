@@ -22,7 +22,7 @@ public class SceneTitleChange : MonoBehaviour
         }
         else
         {
-            SceneManager.LoadScene("TutorialScene");
+            SceneManager.LoadScene("PrologueScene");
         }
     }
 }

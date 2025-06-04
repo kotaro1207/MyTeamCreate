@@ -39,6 +39,8 @@ public class Yadotyumuri : MonoBehaviour
     bool finished = false;
     bool Jump = false;
     bool isMusk = false;
+    bool doubleJump = false;
+    public bool isDoubleJump = false;
     private void Awake()
     {
         animator = GetComponent<Animator>();
@@ -80,20 +82,26 @@ public class Yadotyumuri : MonoBehaviour
             StartCoroutine(LateSpeakStop());
             StartCoroutine(ThierdAnimation());
         }
-        if(text3.currentSentenceNum == 4 && Input.GetKeyDown(KeyCode.Space) && !Jump)
-        {
-            Jump = true;
-            StartCoroutine(JumpStart());
-            StartCoroutine(LateSpeakStop());
-        }
         if(text3.currentSentenceNum == 2 && Input.GetKeyDown(KeyCode.Space) && !isMusk)
         {
             isMusk = true;
             StartCoroutine(GuageMusk());
         }
-        if(text3.finished && Input.GetKeyDown(KeyCode.Space) && !finished)
+        if(text3.currentSentenceNum == 4 && Input.GetKeyDown(KeyCode.Space) && !Jump)
         {
-            StartCoroutine(LateSpeakStop());
+            Jump = true;
+            animator.SetBool("isTalk", false);
+            StartCoroutine(JumpStart());
+        }
+        if (text3.currentSentenceNum == 5 && Input.GetKeyDown(KeyCode.Space) && !doubleJump)
+        {
+            doubleJump = true;
+            animator.SetBool("isTalk", false);
+            StartCoroutine(DoubleJump());
+        }
+        if (text3.finished && Input.GetKeyDown(KeyCode.Space) && !finished)
+        {
+            animator.SetBool("isTalk", false);
             MessageBox.GetComponent<Animator>().SetBool("ON", false);
             Triangle.GetComponent<Image>().enabled = false;
             Triangle.GetComponent<Animator>().enabled = false;
@@ -107,9 +115,9 @@ public class Yadotyumuri : MonoBehaviour
         }
     }
 
-    private IEnumerator LateSpeakStop()
+    private IEnumerator LateSpeakStop(float num = 0.5f)
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(num);
 
         animator.SetBool("isTalk", false);
     }
@@ -142,7 +150,7 @@ public class Yadotyumuri : MonoBehaviour
         textMesh.SetActive(true);
         yield return new WaitForSeconds(1f);
         animator.enabled = true;
-        yield return new WaitForSeconds(0.25f);
+        //yield return new WaitForSeconds(0.25f);
         Triangle.GetComponent<Image>().enabled = true;
         Triangle.GetComponent<Animator>().enabled = true;
     }
@@ -178,8 +186,8 @@ public class Yadotyumuri : MonoBehaviour
         bullet = true;
         yield return new WaitForSeconds(0.75f);
         enemy.ManualAtack();
-        yield return new WaitForSeconds(1f);
-        StartCoroutine(LateSpeakStop());
+        StartCoroutine(LateSpeakStop(0.5f));
+        yield return new WaitForSeconds(0.5f);
         MessageBox.GetComponent<Animator>().SetBool("ON", false);
         Triangle.GetComponent<Image>().enabled = false;
         Triangle.GetComponent<Animator>().enabled = false;
@@ -234,7 +242,8 @@ public class Yadotyumuri : MonoBehaviour
     {
         yield return new WaitForSeconds(0.5f);
 
-        Musk.GetComponent<RectTransform>().position = new Vector3(220f, 430f, 0);
+        Musk.GetComponent<RectTransform>().anchoredPosition = new Vector2(-724f, -146f);
+        Musk.GetComponent<RectTransform>().localScale = new Vector3(3.1f, 3.1f);
 
         panel.GetComponent<Animator>().SetBool("ON", true);
     }
@@ -245,12 +254,25 @@ public class Yadotyumuri : MonoBehaviour
 
         yield return new WaitForSeconds(1f);
 
-        player.GetComponent<TutorialPlayer>().ManualShell = false;
-        player.GetComponent<TutorialPlayer>().TutorialJump = true;
+       // player.GetComponent<TutorialPlayer>().TutorialJump = true;
         player.GetComponent<TutorialPlayer>().ManualJump();
+        player.GetComponent<TutorialPlayer>().ManualShell = false;
 
-        yield return new WaitUntil(() => player.GetComponent<TutorialPlayer>().isGround = true);
-        player.GetComponent<TutorialPlayer>().TutorialJump = false;
+        yield return new WaitUntil(() => player.GetComponent<TutorialPlayer>().isGround == true);
+        //player.GetComponent<TutorialPlayer>().TutorialJump = false;
+    }
+
+    private IEnumerator DoubleJump()
+    {
+        yield return new WaitUntil(() => player.GetComponent<TutorialPlayer>().isGround == true);
+        player.GetComponent<TutorialPlayer>().ManualShell = true;
+        yield return new WaitUntil(() => player.GetComponent<TutorialPlayer>().JumpPower >= 16f);
+        player.GetComponent<TutorialPlayer>().ManualJump();
+        player.GetComponent<TutorialPlayer>().ManualShell = false;
+        yield return new WaitForSeconds(1.35f);
+        player.GetComponent<TutorialPlayer>().DoubleJump();
+        yield return new WaitUntil(() => player.GetComponent<TutorialPlayer>().isGround == true);
+        isDoubleJump = true;
     }
 
 }

@@ -9,6 +9,8 @@ public class ThirdTextController : MonoBehaviour
 
     string[] sentences; // 文章を格納する
     [SerializeField] TextMeshProUGUI uiText;   // uiTextへの参照
+    [SerializeField] TutorialPlayer player;
+    [SerializeField] Yadotyumuri yadotyumuri;
 
     [SerializeField]
     [Range(0.001f, 0.3f)]
@@ -27,9 +29,10 @@ public class ThirdTextController : MonoBehaviour
             "ナイスガード！",
             "SPACEキーを押している間しか　ガードできないから注意してネ！",
             "このゲージを見て！",
-            "SPACEキーを押していると　　　このゲージが貯まっていくヨ！",
-            "SPACEキーを離すと貯まった分だけジャンプするヨ！",
-            "一通り説明できたし、とりあえず実践ダァ！"
+            "SPACEキーを押していると　　　このゲージが上下するヨ！",
+            "SPACEキーを離すとその時の　　ゲージの量だけジャンプするヨ！",
+            "ジャンプ中に再度キーを押すと　二段ジャンプできるヨ！",
+            "百聞は一見に如かずだね！　　　さっそく実践してみよう！"
 
         };
         SetNextSentence();
@@ -42,6 +45,13 @@ public class ThirdTextController : MonoBehaviour
         if (IsDisplayComplete())
         {
             //最後の文章ではない & ボタンが押された
+            if (currentSentenceNum == 5)
+            {
+                if (yadotyumuri.isDoubleJump)
+                {
+                    StartCoroutine(WaitNextSentence());
+                }
+            }
             if (currentSentenceNum < sentences.Length && Input.GetKeyDown(KeyCode.Space))
             {
                 SetNextSentence();
@@ -50,6 +60,7 @@ public class ThirdTextController : MonoBehaviour
             {
                 finished = true;
             }
+
         }
         else
         {
@@ -68,6 +79,13 @@ public class ThirdTextController : MonoBehaviour
             //表示している文字数の更新
             lastUpdateCharCount = displayCharCount;
         }
+    }
+
+    private IEnumerator WaitNextSentence()
+    {
+        yield return new WaitUntil(() => player.isGround);
+
+        SetNextSentence();
     }
 
     // 次の文章をセットする
