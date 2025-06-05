@@ -762,25 +762,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59d13d0fb7be7874c860c625d630c286, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NextjumpPower: 30
-  jumpSpeed: 1.5
   Guage: {fileID: 8203283166176102994}
   _speed: 1
   JumpTime: 0.1
-  JumpPower: 0
-  jumpTimer: 0
-  MaxJumpPower: 17
-  MinJumpPower: 5
   walkAnimation: {fileID: 7427184683742594008}
   shellAnimation: {fileID: 618412901574972124}
   jumpAnimation: {fileID: 9075117391991874694}
   FadeOut: {fileID: 0}
+  OverFadeOut: {fileID: 0}
   jump: {fileID: 8300000, guid: c4193958cd761ad41b368184fb891759, type: 3}
   drop: {fileID: 8300000, guid: 154d8caf724e8134296990e97c0ace63, type: 3}
   dead: {fileID: 8300000, guid: 240ea8e961d46ad4d8709ff48026add5, type: 3}
   damage: {fileID: 8300000, guid: 2786b20f146ad5449b86e362c104c83e, type: 3}
-  PlayerHP: 0
+  difense: {fileID: 8300000, guid: d9a790809f698604babcafb52e447e50, type: 3}
   transparency: 0.5
+  NextjumpPower: 30
+  PlayerHP: 0
+  JumpPower: 0
+  MaxJumpPower: 17
+  MinJumpPower: 5
   Rock: 0
   JumpRock: 1
   AnimationRock: 0

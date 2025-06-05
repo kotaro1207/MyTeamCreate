@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7214263191175204504}
   - component: {fileID: 7500583795565130535}
   - component: {fileID: 8116919444854672069}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: HARI
   m_TagString: HARI
   m_Icon: {fileID: 0}

@@ -33,6 +33,7 @@ public class Player : MonoBehaviour
     [SerializeField, Header("落下音")] private AudioClip drop;
     [SerializeField, Header("死亡")] private AudioClip dead;
     [SerializeField, Header("ダメージ音")] private AudioClip damage;
+    [SerializeField, Header("ガード")] private AudioClip difense;
     [SerializeField, Header("不透明度")] private float transparency = 0.5f;
 
     private float jumpTimer = 0f;
@@ -61,6 +62,8 @@ public class Player : MonoBehaviour
     public bool JumpRock = true;
     public bool AnimationRock = true;
     private bool first = false;
+
+    private bool fack = false;
 
     private float CalculateMoveSpeed()
     {
@@ -115,24 +118,14 @@ public class Player : MonoBehaviour
 
             if (isAlive) SceneChange();
         }
-        else if(HPManager.Instance.Hp == 0) 
-        {
-            if(!first)
-            {
-                first = true;
-                Debug.Log("Change");
-                StartCoroutine(GameOverSceneChanger());
-            }
-        }
     }
 
     private void LookHP()
     {
-        if (HPManager.Instance.Hp <= 0 && !isOne)
+        if (HPManager.Instance.Hp == 0 && !isOne)
         {
             isOne = true;
             sound.PlayOneShot(dead);
-            StartCoroutine(GameOverSceneChanger());
         }
     }
 
@@ -170,7 +163,7 @@ public class Player : MonoBehaviour
             if (!isGround && !doubleJump)
             {
                 doubleJump = true;
-
+                sound.PlayOneShot(jump);
                 _rb.linearVelocity = new(_rb.linearVelocityX, 0);
                 _rb.AddForce(Vector2.up * NextjumpPower, ForceMode2D.Impulse);
             }
@@ -182,6 +175,7 @@ public class Player : MonoBehaviour
         }
         if (Input.GetKeyUp(KeyCode.Space) && isGround)
         {
+            sound.PlayOneShot(jump);
             _rb.AddForce(Vector2.up * JumpPower, ForceMode2D.Impulse);
             JumpPower = 0;
             jumpTimer = 0;
@@ -253,25 +247,38 @@ public class Player : MonoBehaviour
             }
             else
             {
+                sound.PlayOneShot(difense);
+
                 Debug.Log("gard");
             }
         }
         else if (collision.CompareTag("HARI"))
         {
+            sound.PlayOneShot(damage);
+
             playerLife.TakeDamage();
             cameraShake._ShakeCheck();
+            StartCoroutine(InvisibleAnimation());
         }
         else if (collision.CompareTag("pithall"))
         {
+            sound.PlayOneShot(drop);
+
             // プレイヤーのColliderを無効にすることで地面を貫通
-            Collider2D playerCollider = GetComponent<Collider2D>();
-            if (playerCollider != null)
-            {
-                playerCollider.enabled = false;
-            }
+            Physics2D.IgnoreLayerCollision(7, 6, true);//PlayerとDamageを与えるオブジェクトの当たり判定を一時的にFalseにする
+
+            spriteRenderer.enabled = false;
 
             // 下方向に力を加えて落下させる
             _rb.linearVelocity = new Vector2(0, -10f);  // 任意のスピードで下に落とす
+        }
+
+        if (collision.CompareTag("Destroy"))
+        {
+            Debug.Log("Death");
+            cameraShake._ShakeCheck();
+            HPManager.Instance.Hp = 0;
+            OverSceneChange();
         }
     }
 
@@ -285,6 +292,18 @@ public class Player : MonoBehaviour
         }
     }
 
+    private void OverSceneChange()
+    {
+        if (!fack)
+        {
+            fack = true;
+            Rock = true;
+            JumpRock = true;
+            StartCoroutine(OverSceneChanger());
+        }
+    }
+
+
     private IEnumerator SceneChanger()
     {
         if (!isGround) yield return new WaitUntil(() => isGround == true);
@@ -296,13 +315,13 @@ public class Player : MonoBehaviour
         FadeOut.SetActive(true);
     }
 
-    private IEnumerator GameOverSceneChanger()
+    private IEnumerator OverSceneChanger()
     {
-        if (isGround) yield return new WaitUntil(() => isGround == true);
-
         yield return new WaitForSeconds(1f);
+
         OverFadeOut.SetActive(true);
     }
+
 
     private IEnumerator InvisibleAnimation()//チカチカアニメーション&無敵処理
     {

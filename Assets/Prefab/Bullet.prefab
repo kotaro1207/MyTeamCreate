@@ -179,10 +179,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d55f607bdc7f014eb4c7d003207bb04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isTouch: 0
   speed: 17
   lockYThreshold: -3
   rotationSpeed: 0
   fromDirection: {x: 1, y: 0, z: 0}
+  HitUI: {fileID: 7919757385236483334, guid: 200a0464159a3a74288ee15cc7eea436, type: 3}
   recoilAngle: -10
   recoilSpeed: 20
+  DontDestroy: 0
+  isTouch: 0

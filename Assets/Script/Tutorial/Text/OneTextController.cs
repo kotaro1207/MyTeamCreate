@@ -10,6 +10,12 @@ public class OneTextController : MonoBehaviour
     string[] sentences; // 文章を格納する
     [SerializeField] TextMeshProUGUI uiText;   // uiTextへの参照
 
+
+    [SerializeField, Header("sound")] private AudioClip sound;
+    private new AudioSource audio;
+
+
+
     [SerializeField]
     [Range(0.001f, 0.3f)]
     float intervalForCharDisplay = 0.05f;   // 1文字の表示にかける時間
@@ -21,6 +27,11 @@ public class OneTextController : MonoBehaviour
     private int lastUpdateCharCount = -1;       // 表示中の文字数
 
     public bool finished;
+    private void Awake()
+    {
+       audio = GetComponent<AudioSource>();
+    }
+
     void Start()
     {
         sentences = new string[]{
@@ -64,6 +75,7 @@ public class OneTextController : MonoBehaviour
             uiText.text = currentSentence.Substring(0, displayCharCount);
             //表示している文字数の更新
             lastUpdateCharCount = displayCharCount;
+            audio.PlayOneShot(sound);
         }
     }
 

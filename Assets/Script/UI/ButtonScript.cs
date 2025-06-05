@@ -84,6 +84,7 @@ public class ButtonScript : MonoBehaviour
             pressed = true;
             StartCoroutine(Confirmed());
             audioSource.PlayOneShot(sound);
+            HPManager.Instance.Hp = 3;
             sprite.color = sprite.color + new Color(0, 0, 0, 1);
         }
     }

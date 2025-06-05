@@ -11,6 +11,8 @@ public class ThirdTextController : MonoBehaviour
     [SerializeField] TextMeshProUGUI uiText;   // uiTextへの参照
     [SerializeField] TutorialPlayer player;
     [SerializeField] Yadotyumuri yadotyumuri;
+    [SerializeField, Header("sound")] private AudioClip sound;
+    private new AudioSource audio;
 
     [SerializeField]
     [Range(0.001f, 0.3f)]
@@ -23,6 +25,11 @@ public class ThirdTextController : MonoBehaviour
     private int lastUpdateCharCount = -1;       // 表示中の文字数
 
     public bool finished;
+    private void Awake()
+    {
+        audio = GetComponent<AudioSource>();
+    }
+
     void Start()
     {
         sentences = new string[]{
@@ -78,6 +85,8 @@ public class ThirdTextController : MonoBehaviour
             uiText.text = currentSentence.Substring(0, displayCharCount);
             //表示している文字数の更新
             lastUpdateCharCount = displayCharCount;
+            audio.PlayOneShot(sound);
+
         }
     }
 

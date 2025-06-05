@@ -37,6 +37,13 @@ public class TutorialPlayer : MonoBehaviour
     [SerializeField, Header("FadeOut Image")]
     private GameObject FadeOut;
 
+    [SerializeField] AudioClip jump;
+    [SerializeField] AudioClip difence;
+
+
+
+    private new AudioSource audio;
+
     public int PlayerHP;
 
     private PlayerLife playerLife;
@@ -72,6 +79,7 @@ public class TutorialPlayer : MonoBehaviour
     }
     private void Awake()
     {
+        audio = GetComponent<AudioSource>();
         _rb = GetComponent<Rigidbody2D>();
         playerLife = GetComponent<PlayerLife>();
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -139,11 +147,13 @@ public class TutorialPlayer : MonoBehaviour
 
     public void ManualJump()
     {
+        audio.PlayOneShot(jump);
         Debug.Log("ジャンプ");
         _rb.AddForce(Vector2.up * JumpPower, ForceMode2D.Impulse);
     }
     public void DoubleJump()
     {
+        audio.PlayOneShot(jump);
         _rb.linearVelocity = new(_rb.linearVelocityX, 0);
         _rb.AddForce(Vector2.up * 10, ForceMode2D.Impulse);
     }
@@ -206,6 +216,7 @@ public class TutorialPlayer : MonoBehaviour
             if (ManualShell)
             {
                 Debug.Log("ガードできた");
+                audio.PlayOneShot(difence);
             }
             else if (!isShell)
             {

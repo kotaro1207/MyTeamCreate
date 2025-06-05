@@ -10,6 +10,8 @@ TagManager:
   - StopCollision
   - HARI
   - poison
+  - pithall
+  - Destroy
   layers:
   - Default
   - TransparentFX
@@ -52,6 +54,9 @@ TagManager:
     locked: 0
   - name: Object
     uniqueID: 2521694865
+    locked: 0
+  - name: Danger
+    uniqueID: 2372686097
     locked: 0
   m_RenderingLayers:
   - Default
