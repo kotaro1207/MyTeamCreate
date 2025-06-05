@@ -12,8 +12,9 @@ public class SceneChange : MonoBehaviour
 
     private void Update()
     {
-        if(isButtonDown && Input.GetKeyDown(KeyCode.Space))
+        if (isButtonDown && Input.GetKeyDown(KeyCode.Space))
         {
+            HPManager.Instance.Hp = 3;
             LoadScene();
         }
     }
