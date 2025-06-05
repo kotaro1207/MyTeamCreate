@@ -60,6 +60,7 @@ public class Player : MonoBehaviour
     public bool Rock = false;
     public bool JumpRock = true;
     public bool AnimationRock = true;
+    private bool first = false;
 
     private float CalculateMoveSpeed()
     {
@@ -92,32 +93,42 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        LookHP();
-        UpdateGroundStatus();
-        if (!Rock)
+        if (HPManager.Instance.Hp > 0)
         {
-            Move();
-        }
-        if (!JumpRock)
-        {
-            Guage.SetActive(true);
-            Jump();
-        }
-        else
-        {
-            Guage.SetActive(false);
-        }
+            LookHP();
+            UpdateGroundStatus();
+            if (!Rock)
+            {
+                Move();
+            }
+            if (!JumpRock)
+            {
+                Guage.SetActive(true);
+                Jump();
+            }
+            else
+            {
+                Guage.SetActive(false);
+            }
 
-        if (!AnimationRock) AnimationChange();
+            if (!AnimationRock) AnimationChange();
 
-        if (isAlive) SceneChange();
+            if (isAlive) SceneChange();
+        }
+        else if(HPManager.Instance.Hp == 0) 
+        {
+            if(!first)
+            {
+                first = true;
+                Debug.Log("Change");
+                StartCoroutine(GameOverSceneChanger());
+            }
+        }
     }
 
     private void LookHP()
     {
-        PlayerHP = HPManager.Instance.Hp;
-
-        if (PlayerHP <= 0 && !isOne)
+        if (HPManager.Instance.Hp <= 0 && !isOne)
         {
             isOne = true;
             sound.PlayOneShot(dead);
@@ -245,7 +256,7 @@ public class Player : MonoBehaviour
                 Debug.Log("gard");
             }
         }
-        else if (collision.CompareTag("HARITag"))
+        else if (collision.CompareTag("HARI"))
         {
             playerLife.TakeDamage();
             cameraShake._ShakeCheck();
@@ -262,10 +273,6 @@ public class Player : MonoBehaviour
             // 下方向に力を加えて落下させる
             _rb.linearVelocity = new Vector2(0, -10f);  // 任意のスピードで下に落とす
         }
-        //if (collision.CompareTag("Destroy"))
-        //{
-        //    Destroy(gameObject);
-        //}
     }
 
     private void SceneChange()
@@ -280,7 +287,7 @@ public class Player : MonoBehaviour
 
     private IEnumerator SceneChanger()
     {
-        if(!isGround) yield return new WaitUntil(() => isGround = true);
+        if (!isGround) yield return new WaitUntil(() => isGround == true);
 
         AnimationRock = true;
 
@@ -291,7 +298,7 @@ public class Player : MonoBehaviour
 
     private IEnumerator GameOverSceneChanger()
     {
-        if(isGround) yield return new WaitUntil(() => isGround = true);
+        if (isGround) yield return new WaitUntil(() => isGround == true);
 
         yield return new WaitForSeconds(1f);
         OverFadeOut.SetActive(true);

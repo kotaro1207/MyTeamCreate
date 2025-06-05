@@ -322,7 +322,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2e4d37061c873c409540fdf36d0d41b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneName: TitleScene
+  sceneName: GameScene2
   isButtonDown: 0
 --- !u!95 &697539422
 Animator:
@@ -334,7 +334,7 @@ Animator:
   m_GameObject: {fileID: 697539419}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 92bd5e84fe6e2b44d96d598fc092ee25, type: 2}
+  m_Controller: {fileID: 9100000, guid: 44e2b48d105186943a7e73f7f5fe70ba, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -452,7 +452,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67cacf247b6717445aef234bcba9ccbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scoreText: {fileID: 1621167004}
+  timeText: {fileID: 1621167004}
 --- !u!114 &993583731
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -779,7 +779,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1436579342
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -792,7 +792,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2e4d37061c873c409540fdf36d0d41b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneName: TitleScene
+  sceneName: GameScene2
   isButtonDown: 1
 --- !u!4 &1436579343
 Transform:

@@ -110,7 +110,7 @@ public class Yadotyumuri : MonoBehaviour
             text2.enabled = false;
 
             finished = true;
-            FadeOut.GetComponent<Animator>().enabled = true;
+            FadeOut.SetActive(true);
             TutorialManager.Instance.tutorialCompleted = true;
         }
     }

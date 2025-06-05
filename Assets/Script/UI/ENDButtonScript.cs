@@ -1,8 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEditor;
 using UnityEngine.UI;
 
 public class ENDButtonScript : MonoBehaviour
@@ -12,7 +9,9 @@ public class ENDButtonScript : MonoBehaviour
     private bool transparent, pressed;
 
     [SerializeField]
-    private GameObject image;
+    private Image image;
+
+    [SerializeField] private GameObject FadeOut;
 
     public bool isUI;
 
@@ -20,6 +19,7 @@ public class ENDButtonScript : MonoBehaviour
     public float fadeStartTime = 5f; // フェード開始までの秒数
     public float fadeOutDuration = 1f; // フェードアウトにかける秒数
 
+    private float elapsedTime = 0f;
     private bool fadeStarted = false;
 
     private void Awake()
@@ -39,15 +39,31 @@ public class ENDButtonScript : MonoBehaviour
         }
         else if (image != null)
         {
-            Color c = image.GetComponent<Image>().color;
-            image.GetComponent<Image>().color = new Color(c.r, c.g, c.b, 0f);
+            Color c = image.color;
+            image.color = new Color(c.r, c.g, c.b, 0f);
         }
     }
 
 
     void Update()
     {
-        //elapsedTime += Time.deltaTime;
+        elapsedTime += Time.deltaTime;
+
+        if (fadeStartTime <= elapsedTime)
+        {
+            if(Input.GetKeyDown(KeyCode.Space))
+            {
+             LoadScene();
+            }
+        }
+        else
+        {}
+
+        if (!pressed && !fadeStarted && elapsedTime >= fadeStartTime)
+        {
+            fadeStarted = true;
+            StartCoroutine(FadeIn());
+        }
 
         // AlphaChangeは無効化またはisUIチェック（フェードインに任せる）
         if (!pressed && !fadeStarted && !isUI)
@@ -55,7 +71,6 @@ public class ENDButtonScript : MonoBehaviour
             AlphaChange();
         }
     }
-
 
     private void AlphaChange()
     {
@@ -84,10 +99,6 @@ public class ENDButtonScript : MonoBehaviour
 
     private void LoadScene()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && !pressed)
-        {
-            Debug.Log("タイトルシーンに移行します");
-            image.GetComponent<Image>().enabled = true;
             pressed = true;
 
             if (!isUI)
@@ -96,12 +107,11 @@ public class ENDButtonScript : MonoBehaviour
             }
             else if (image != null)
             {
-                image.GetComponent<Image>().color = image.GetComponent<Image>().color + new Color(0, 0, 0, 1);
+                image.color = image.color + new Color(0, 0, 0, 1);
             }
-            StartCoroutine(Confirmed());
-            StartCoroutine(FadeIn());
 
-        }
+            StartCoroutine(Confirmed());
+        
     }
 
     private IEnumerator Confirmed()
@@ -135,7 +145,7 @@ public class ENDButtonScript : MonoBehaviour
 
         if (image != null)
         {
-            image.GetComponent<Animator>().enabled = true;
+            FadeOut.SetActive(true);
         }
     }
 
@@ -161,19 +171,18 @@ public class ENDButtonScript : MonoBehaviour
         }
         else if (image != null)
         {
-            Color c = image.GetComponent<Image>().color;
-            image.GetComponent<Image>().color = new Color(c.r, c.g, c.b, 0f); // 初期透明
+            Color c = image.color;
+            image.color = new Color(c.r, c.g, c.b, 0f); // 初期透明
 
             while (elapsed < duration)
             {
                 float alpha = Mathf.Lerp(0f, 1f, elapsed / duration);
-                image.GetComponent<Image>().color = new Color(c.r, c.g, c.b, alpha);
+                image.color = new Color(c.r, c.g, c.b, alpha);
                 elapsed += Time.deltaTime;
                 yield return null;
             }
 
-            image.GetComponent<Image>().color = new Color(c.r, c.g, c.b, 1f); // 最終不透明
-
+            image.color = new Color(c.r, c.g, c.b, 1f); // 最終不透明
         }
     }
 

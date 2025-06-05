@@ -43,7 +43,7 @@ public class BoardMove : MonoBehaviour
     {
         yield return new WaitForSeconds(1f); 
         Button.SetActive(true);
-        HPManager.Instance.Hp++;
+        HPManager.Instance.Hp = 3;
     }
 }
 

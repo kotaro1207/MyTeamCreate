@@ -8,6 +8,8 @@ TagManager:
   - Enemy
   - bullet
   - StopCollision
+  - HARI
+  - poison
   layers:
   - Default
   - TransparentFX
